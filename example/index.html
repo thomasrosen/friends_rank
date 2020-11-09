@@ -6,6 +6,50 @@
 		<link rel="stylesheet" href="./style.css" />
 	</head>
 	<body>
-		
+
+		<h1>Your Friends</h1>
+
+		<fieldset id="rank" style="margin:64px auto;">
+			<legend>Rank them</legend>
+			<p id="questionForRanking">An important question?</p>
+			<ul>
+				<li><button>button</button></li>
+				<li><button>button</button></li>
+			</ul>
+			<section class="actions">
+				<button>skip</button>
+			</section>
+		</fieldset>
+
+		<section class="cards">
+
+			<fieldset id="addPerson" role="form" class="oneRowStretch">
+				<legend>Add a new Person</legend>
+				<label for="name">Name:</label>
+				<input id="name" name="name" type="text" placeholder="Thomas"/>
+				<button onclick="addPerson()">Add Person</button>
+			</fieldset>
+	
+			<fieldset id="personList">
+				<legend>The Friend List</legend>
+				<ul></ul>
+			</fieldset>
+
+			<fieldset id="addQuestion" role="form" class="oneRowStretch">
+				<legend>Add a new Question</legend>
+				<label for="question">Question:</label>
+				<input id="question" name="question" type="text" placeholder="Wen magst du mehr?"/>
+				<button onclick="addQuestion()">Add Question</button>
+			</fieldset>
+	
+			<fieldset id="questionList">
+				<legend>The Questions</legend>
+				<ul></ul>
+			</fieldset>
+
+			<fieldset style="opacity:0;height:0;padding:0;border-width:0;"></fieldset>
+		</section>
 	</body>
 </html>
+
+
