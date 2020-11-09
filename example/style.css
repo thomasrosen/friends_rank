@@ -1,0 +1,118 @@
+
+:root{
+	--text-color: black;
+	--background-color: white;
+	--secondary-background-color: rgba(0,0,0,0.1);
+	--border-color: rgba(0,0,0,0.3);
+}
+@media (prefers-color-scheme: dark) {
+	:root{
+		--text-color: white;
+		--background-color: black;
+		--secondary-background-color: rgba(255,255,255,0.1);
+		--border-color: rgba(255,255,255,0.3);
+	}
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	outline: none;
+}
+
+body{
+	background: var(--background-color);
+	color: var(--text-color);
+	transition: color .2s ease, background .2s ease;
+}
+
+h1{
+	margin: 64px auto;
+	text-align: center;
+}
+
+.cards{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	width: 900px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.oneRowStretch{
+	display: flex;
+	align-items: center;
+}
+.oneRowStretch input[type="text"]{
+	width: 100%;
+	margin: 4px 8px;
+	min-width: 0;
+}
+
+fieldset{
+	/*min-width: 200px;*/
+	width: 400px;
+	max-width: 100%;
+	border: 1px solid var(--border-color);
+	padding: 8px 16px;
+	margin: 16px;
+	overflow: auto;
+	transition: border-color .2s ease;
+}
+fieldset legend{
+	padding: 0 16px;
+	font-weight: bold;
+}
+fieldset section.actions{
+	background: var(--secondary-background-color);
+	margin: 0 -16px -8px -16px;
+	padding: 8px 16px;
+	transition: background .2s ease;
+}
+
+hr{
+	border: 0;
+	height: 1px;
+	background: var(--border-color);
+	transition: background .2s ease;
+}
+
+button, input[type="submit"]{
+	cursor: pointer;
+	white-space: nowrap;
+}
+button, input {
+	padding: 4px;
+	margin: 4px 2px;
+}
+input[type="text"]{
+	border: 1px solid var(--border-color);
+	border-width: 0 0 1px 0;
+	background: transparent;
+	color: var(--text-color);
+	transition: border-color .2s ease, color .2s ease;
+}
+
+p{
+	padding: 2px 4px;
+}
+
+ul{
+	margin: 8px 0;
+	list-style-type: none;
+}
+
+/*
+ol{
+	list-style-type: decimal;
+	margin: 8px 0;
+	padding: 0px 16px;
+}
+ol li{
+	padding: 2px;
+}
+*/
+
+
