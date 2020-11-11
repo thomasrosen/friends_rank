@@ -189,10 +189,17 @@ class FriendRank {
 
 const deleteButtonSVG = '<svg class="deleteButton" viewBox="0 0 24 24" width="18" height="18"><path d="M6 21h12V7H6v14zm2.46-9.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg>'
 // const deleteButtonSVG = '<svg class="deleteButton" viewBox="0 0 24 24" width="24" height="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>'
+const moveButtonSVG = '<svg class="moveButton" viewBox="0 0 24 24" width="24" height="24"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>'
 
 async function deletePerson(personID){
 	await friend_rank.deletePerson(personID)
 	render_personList()
+	render_rankingQuestion()
+}
+
+async function deleteQuestion(questionID){
+	await friend_rank.deleteQuestion(questionID)
+	render_questionList()
 	render_rankingQuestion()
 }
 
@@ -225,14 +232,36 @@ function render_personList(){
 }
 
 function render_questionList(){
-	const questionListElement = document.querySelector('#questionList ul')
+	// const questionListElement = document.querySelector('#questionList ul')
 
-	const questions = Object.entries(friend_rank.questions)
+	let questions = Object.entries(friend_rank.questions)
 	if (questions.length > 0) {
+		questions = questions.sort((a, b) => {
+			const n = b[1].ranking - a[1].ranking
+			if (n !== 0) {
+				return n
+			}
+			return a[1].timeAdded - b[1].timeAdded
+		})
+
 		questionListElement.innerHTML = ''
 		for (const entry of questions) {
+			const questionID = entry[0]
 			const newQuestionElement = document.createElement('li')
-			newQuestionElement.innerHTML = entry[1]
+			newQuestionElement.setAttribute('data-id', questionID)
+			newQuestionElement.innerHTML = `
+				<div class="oneRowStretch">
+					<div style="width: 100%;">${entry[1].question}</div>
+					<div class="actionRow">
+						${deleteButtonSVG}
+						${moveButtonSVG}
+					</div>
+				</div>
+			`
+
+			const deleteButton = newQuestionElement.querySelector('.deleteButton')
+			deleteButton.addEventListener('click', ()=>deleteQuestion(questionID))
+
 			questionListElement.appendChild(newQuestionElement)
 		}
 	}else{
