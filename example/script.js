@@ -57,9 +57,12 @@ class FriendRank {
 			resolve()
 		})
 	}
-	renamePerson(personID, newName){
-		this.people[personID] = newName
-		this.saveData()
+	updatePerson(personID, newPersonObj){
+		return new Promise((resolve)=>{
+			this.people[personID] = newPersonObj
+			this.saveData()
+			resolve()
+		})
 	}
 	deletePerson(personID){
 		// TODO remove answers about this person
