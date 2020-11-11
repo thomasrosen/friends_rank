@@ -64,10 +64,16 @@ class FriendRank {
 			resolve()
 		})
 	}
-	deletePerson(personID){
-		// TODO remove answers about this person
-		delete this.people[personID]
-		this.saveData()
+	deletePerson(personID_to_delete){
+		return new Promise((resolve)=>{
+			this.answers = this.answers.map(answer => ({
+				...answer,
+				sortedPersonIDs: sortedPersonIDs.filter(personID => personID !== personID_to_delete)
+			}))
+			delete this.people[personID_to_delete]
+			this.saveData()
+			resolve()
+		})
 	}
 
 	addQuestion(questionText){
