@@ -26,11 +26,16 @@
 
 		<section class="cards">
 
-			<fieldset id="addPerson" role="form" class="oneRowStretch">
-				<legend>Add a new Person</legend>
-				<label for="name">Name:</label>
-				<input id="name" name="name" type="text" placeholder="Thomas"/>
-				<button onclick="addPerson()">Add Person</button>
+			<fieldset id="addPerson" role="form">
+				<h2>Add a new Person</h2>
+				<div class="oneRowStretch">
+					<label for="name">Name:</label>
+					<input id="name" name="name" type="text" placeholder="Thomas Rosen" style="margin-right: 0;"/>
+				</div>
+				<section class="actions">
+					<span></span>
+					<button style="float:right;" onclick="addPerson()">Add Person</button>
+				</section>
 			</fieldset>
 	
 			<fieldset id="personList">

@@ -280,11 +280,14 @@ function render_rankingQuestion(){
 	}
 }
 
-function addPerson(){
+async function addPerson(){
 	const textField = document.querySelector('#addPerson input[name="name"]')
 	const value = textField.value
 	if (value !== '') {
-		friend_rank.addPerson(value)
+		await friend_rank.addPerson({
+			name: value,
+			timeAdded: new Date()*1,
+		})
 		textField.value = ''
 		render_personList()
 	}
