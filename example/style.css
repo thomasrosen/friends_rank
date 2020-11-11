@@ -1,16 +1,18 @@
 
 :root{
-	--text-color: black;
-	--background-color: white;
-	--secondary-background-color: rgba(0,0,0,0.1);
-	--border-color: rgba(0,0,0,0.3);
+	--text-color: #212121;
+	--background-color: #fff;
+	--secondary-background-color: #f5f5f5;
+	--border-color: #e0e0e0;
+	--secondary-color: #2962FF;
 }
 @media (prefers-color-scheme: dark) {
 	:root{
-		--text-color: white;
-		--background-color: black;
-		--secondary-background-color: rgba(255,255,255,0.1);
-		--border-color: rgba(255,255,255,0.3);
+		--text-color: #ECEFF1;
+		--background-color: #1e1e1e;
+		--secondary-background-color: #121212;
+		--border-color: #333;
+		--secondary-color: #2962FF;
 	}
 }
 
