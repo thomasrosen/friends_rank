@@ -131,4 +131,9 @@ ol.movableItems li{
 	cursor: move;
 }
 
+h2{
+	margin: 8px 0;
+	line-height: 1;
+}
+
 
