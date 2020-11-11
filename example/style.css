@@ -43,9 +43,19 @@ h1{
 }
 .oneRowStretch{
 	display: flex;
+	align-items: flex-start;
+}
+.oneRowStretch.top{
+	align-items: flex-start;
+}
+.oneRowStretch.middle{
 	align-items: center;
 }
-.oneRowStretch input[type="text"]{
+.oneRowStretch label{
+	margin-top: 10px;
+}
+.oneRowStretch input[type="text"],
+.oneRowStretch textarea{
 	width: 100%;
 	margin: 4px 8px;
 	min-width: 0;
