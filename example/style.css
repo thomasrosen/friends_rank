@@ -26,6 +26,12 @@ body{
 	color: var(--text-color);
 	transition: color .2s ease, background .2s ease;
 }
+body,
+input[type="text"],
+textarea{
+	font-family: Futura, sans-serif;
+	font-size: 18px;
+}
 
 h1{
 	margin: 64px auto;
@@ -99,18 +105,37 @@ hr{
 button, input[type="submit"]{
 	cursor: pointer;
 	white-space: nowrap;
-}
-button, input {
 	padding: 4px;
 	margin: 4px 2px;
 }
-input[type="text"]{
-	border: 1px solid var(--border-color);
+input[type="text"],
+textarea{
+	padding: 8px;
+	margin: 4px 2px;
+	border: 0;
 	border-width: 0 0 1px 0;
 	background: transparent;
 	color: var(--text-color);
-	transition: border-color .2s ease, color .2s ease;
+	transition: box-shadow .2s ease, color .2s ease;
 }
+input[type="text"]{
+	box-shadow: inset 0 -1px 0 0 var(--border-color)
+}
+input[type="text"]:active,
+input[type="text"]:focus{
+	box-shadow: inset 0 -2px 0 0 var(--secondary-color)
+}
+textarea{
+	border-width: 1px;
+	resize: none;
+	height: 96px;
+	box-shadow: inset 0 0 0 1px var(--border-color)
+}
+textarea:active,
+textarea:focus{
+	box-shadow: inset 0 0 0 2px var(--secondary-color)
+}
+
 
 p{
 	padding: 2px 4px;
