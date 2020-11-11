@@ -55,21 +55,28 @@ fieldset{
 	/*min-width: 200px;*/
 	width: 400px;
 	max-width: 100%;
+	background: var(--background-color);
 	border: 1px solid var(--border-color);
 	padding: 8px 16px;
 	margin: 16px;
 	overflow: auto;
-	transition: border-color .2s ease;
+	transition: background .2s ease, border-color .2s ease;
 }
 fieldset legend{
-	padding: 0 16px;
+	padding: 4px 16px;
 	font-weight: bold;
+	background: #e0e0e0;
+	margin: -29px 0 0px -17px;
 }
 fieldset section.actions{
 	background: var(--secondary-background-color);
-	margin: 0 -16px -8px -16px;
+	margin: 8px -16px -8px -16px;
 	padding: 8px 16px;
 	transition: background .2s ease;
+
+	display: flex;
+	justify-content: space-between;
+	/*flex-direction: row-reverse;*/
 }
 
 hr{
