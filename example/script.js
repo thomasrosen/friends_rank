@@ -91,10 +91,14 @@ class FriendRank {
 			resolve()
 		})
 	}
-	deleteQuestion(questionID){
-		// TODO remove answers about this question
-		// TODO remove question
-		// TODO save data
+	deleteQuestion(questionID_to_delete){
+		return new Promise((resolve)=>{
+			this.answers = this.answers.filter(answer => answer.questionID !== questionID_to_delete)
+			delete this.questions[questionID_to_delete]
+			this.saveData()
+			resolve()
+		})
+	}
 	}
 
 	savePeopleRanks(questionID, ranksByPersonID){}
