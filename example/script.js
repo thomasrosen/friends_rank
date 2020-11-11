@@ -49,10 +49,13 @@ class FriendRank {
 		store.set('answers', this.answers)
 	}
 
-	addPerson(name){
-		const newPersonID = this.uuidv4()
-		this.people[newPersonID] = name
-		this.saveData()
+	addPerson(personObj){
+		return new Promise((resolve)=>{
+			const newPersonID = this.uuidv4()
+			this.people[newPersonID] = personObj
+			this.saveData()
+			resolve()
+		})
 	}
 	renamePerson(personID, newName){
 		this.people[personID] = newName
