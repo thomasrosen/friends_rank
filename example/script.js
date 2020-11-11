@@ -369,6 +369,20 @@ async function savePersonRanking(){
 	render_personList()
 	render_rankingQuestion()
 }
+function saveQuestionsRanking(){
+	const sortedQuestionIDs = questionSortable.toArray()
+	const stepLength = 1/sortedQuestionIDs.length
+	let currentRank = 1
+	for (const questionID of sortedQuestionIDs) {
+		friend_rank.updateQuestion(questionID, {
+			...friend_rank.questions[questionID],
+			ranking: currentRank,
+		})
+		currentRank -= stepLength
+	}
+
+	render_personList()
+}
 
 
 
