@@ -175,10 +175,21 @@ function addQuestion(){
 
 
 
-const friend_rank = new FriendRank()
+var friend_rank,
+personRankingListElement, personRankingSortable,
+questionListElement, questionSortable
+
 
 function start(){
-	console.log('start', friend_rank)
+	friend_rank = new FriendRank()
+
+	personRankingListElement = document.querySelector('#personRanking ol')
+	personRankingSortable = Sortable.create(personRankingListElement)
+
+	questionListElement = document.querySelector('#questionList ol')
+	questionSortable = Sortable.create(questionListElement, {
+		onEnd: () => saveQuestionsRanking(),
+	})
 
 	render_personList()
 	render_questionList()
