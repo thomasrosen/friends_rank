@@ -76,10 +76,14 @@ class FriendRank {
 		})
 	}
 
-	addQuestion(questionText){
-		const newQuestionID = this.uuidv4()
-		this.questions[newQuestionID] = questionText
-		this.saveData()
+	addQuestion(questionObj){
+		return new Promise((resolve)=>{
+			const newQuestionID = this.uuidv4()
+			this.questions[newQuestionID] = questionObj
+			this.saveData()
+			resolve()
+		})
+	}
 	}
 	deleteQuestion(questionID){
 		// TODO remove answers about this question
