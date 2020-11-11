@@ -12,15 +12,12 @@
 
 		<h1>Your Friends</h1>
 
-		<fieldset id="rank" style="margin:64px auto;">
-			<legend>Rank them</legend>
-			<p id="questionForRanking">An important question?</p>
-			<ul>
-				<li><button>button</button></li>
-				<li><button>button</button></li>
-			</ul>
+		<fieldset id="personRanking" style="margin:64px auto;">
+			<h2 id="questionForRanking"></h2>
+			<ol class="movableItems"></ol>
 			<section class="actions">
-				<button>skip</button>
+				<button onclick="render_rankingQuestion()">Skip</button>
+				<button style="float:right;" onclick="savePersonRanking()">Save</button>
 			</section>
 		</fieldset>
 

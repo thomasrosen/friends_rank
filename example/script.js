@@ -183,6 +183,25 @@ class FriendRank {
 
 
 
+
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+	// SOURCE: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function getRandomIntInclusive(min, max) {
+	// SOURCE: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
 }
 
 
@@ -270,13 +289,41 @@ function render_questionList(){
 }
 
 function render_rankingQuestion(){
-	// const questionListElement = document.querySelector('#questionList ul')
-	
-	const people = Object.entries(friend_rank.people)
+	let people = Object.entries(friend_rank.people)
 	const questions = Object.entries(friend_rank.questions)
+
+	const minPeople = 2
+	const maxPeople = 4
 	
-	if (people.length > 0 && questions.length > 0) {
-		console.log('hej')
+	if (people.length >= minPeople && questions.length > 0) {
+		document.querySelector('#personRanking').style.display = 'block'
+
+		const questionEntry = questions[Math.floor(Math.random() * questions.length)]
+		const questionForRankingElement = document.querySelector('#questionForRanking')
+		questionForRankingElement.setAttribute('data-id', questionEntry[0])
+		questionForRankingElement.innerHTML = questionEntry[1].question
+
+		const peopleAmount = getRandomIntInclusive(minPeople, maxPeople)
+		people = shuffle(people).slice(0, peopleAmount)
+
+		const personRankingListElement = document.querySelector('#personRanking ol')
+		personRankingListElement.innerHTML = ''
+		for (const personEntry of people) {
+			const newPersonElement = document.createElement('li')
+			newPersonElement.setAttribute('data-id', personEntry[0])
+			newPersonElement.innerHTML = `
+				<div class="oneRowStretch">
+					<div style="width: 100%;">${personEntry[1].name}</div>
+					<div class="actionRow">
+						${moveButtonSVG}
+					</div>
+				</div>
+			`
+
+			personRankingListElement.appendChild(newPersonElement)
+		}
+	}else{
+		document.querySelector('#personRanking').style.display = 'none'
 	}
 }
 
@@ -290,6 +337,7 @@ async function addPerson(){
 		})
 		textField.value = ''
 		render_personList()
+		render_rankingQuestion()
 	}
 }
 async function addQuestion(){
@@ -303,9 +351,24 @@ async function addQuestion(){
 		})
 		textField.value = ''
 		render_questionList()
+		render_rankingQuestion()
 	}
 }
 
+async function savePersonRanking(){
+	const questionForRankingElement = document.querySelector('#questionForRanking')
+	const questionID = questionForRankingElement.getAttribute('data-id')
+
+	const sortedPersonIDs = personRankingSortable.toArray()
+	await friend_rank.addAnswer({
+		questionID,
+		sortedPersonIDs,
+		timeAdded: new Date()*1,
+	})
+
+	render_personList()
+	render_rankingQuestion()
+}
 
 
 
