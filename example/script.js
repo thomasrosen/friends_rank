@@ -99,6 +99,13 @@ class FriendRank {
 			resolve()
 		})
 	}
+
+	addAnswer(answerObj){
+		return new Promise((resolve)=>{
+			this.answers.push(answerObj)
+			this.saveData()
+			resolve()
+		})
 	}
 
 	savePeopleRanks(questionID, ranksByPersonID){}
