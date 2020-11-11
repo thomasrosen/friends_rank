@@ -43,11 +43,16 @@
 				<ol></ol>
 			</fieldset>
 
-			<fieldset id="addQuestion" role="form" class="oneRowStretch">
-				<legend>Add a new Question</legend>
-				<label for="question">Question:</label>
-				<input id="question" name="question" type="text" placeholder="Wen magst du mehr?"/>
-				<button onclick="addQuestion()">Add Question</button>
+			<fieldset id="addQuestion" role="form">
+				<h2>Add a new Question</h2>
+				<div class="oneRowStretch">
+					<label for="question">Question:</label>
+					<textarea id="question" name="question" placeholder="Mit wem möchtest du gerade eher Zeit verbringen?" style="margin-right: 0;"></textarea>
+				</div>
+				<section class="actions">
+					<span></span>
+					<button style="float:right;" onclick="addQuestion()">Add Question</button>
+				</section>
 			</fieldset>
 	
 			<fieldset id="questionList">

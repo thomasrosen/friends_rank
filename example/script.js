@@ -292,11 +292,15 @@ async function addPerson(){
 		render_personList()
 	}
 }
-function addQuestion(){
+async function addQuestion(){
 	const textField = document.querySelector('#addQuestion input[name="question"]')
 	const value = textField.value
 	if (value !== '') {
-		friend_rank.addQuestion(value)
+		await friend_rank.addQuestion({
+			question: value,
+			ranking: 1,
+			timeAdded: new Date()*1,
+		})
 		textField.value = ''
 		render_questionList()
 	}
