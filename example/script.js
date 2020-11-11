@@ -107,14 +107,6 @@ class FriendRank {
 			resolve()
 		})
 	}
-
-	savePeopleRanks(questionID, ranksByPersonID){}
-	saveQuestionRanks(questionIDsWithRank){}
-
-	askQuestion(){
-		// question its about
-		// people to rank
-	}
 }
 
 
