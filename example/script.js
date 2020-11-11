@@ -107,7 +107,16 @@ class FriendRank {
 			resolve()
 		})
 	}
+
+
+
+
+
+
+
+
 }
+
 
 
 
@@ -172,6 +181,7 @@ function addQuestion(){
 		render_questionList()
 	}
 }
+
 
 
 
