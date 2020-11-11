@@ -104,15 +104,31 @@ ul{
 	list-style-type: none;
 }
 
-/*
 ol{
 	list-style-type: decimal;
 	margin: 8px 0;
-	padding: 0px 16px;
+	padding: 0 0 0 20px;
 }
 ol li{
 	padding: 2px;
 }
-*/
+ol.movableItems li{
+	cursor: move;
+}
+.actionRow{
+	display: flex;
+	align-items: center;
+	margin-left: 8px;
+}
+.editButton,
+.deleteButton,
+.moveButton{
+	cursor: pointer;
+	margin: 0 2px;
+	fill:var(--text-color);
+}
+.moveButton{
+	cursor: move;
+}
 
 
