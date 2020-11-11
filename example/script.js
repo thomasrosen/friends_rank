@@ -9,6 +9,33 @@ class FriendRank {
 	people = store.get('people') || {}
 	questions = store.get('questions') || {}
 	answers = store.get('answers') || []
+
+	/*
+		STRUCTURE:
+
+		people = {
+			'personID': {
+				name: String,
+				timeAdded: Number,
+				// hidden: Boolean,
+			}
+		}
+		question = {
+			'questionID': {
+				question: String,
+				ranking: Number,
+				timeAdded: Number,
+				// hidden: Boolean,
+			}
+		}
+		answers = [
+			{
+				questionID: String,
+				sortedPersonIDs: [String],
+				timeAdded: Number,
+			}
+		]
+	*/
 	
 	uuidv4() {
 		return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
