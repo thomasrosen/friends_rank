@@ -84,6 +84,12 @@ class FriendRank {
 			resolve()
 		})
 	}
+	updateQuestion(questionID, newQuestionObj){
+		return new Promise((resolve)=>{
+			this.questions[questionID] = newQuestionObj
+			this.saveData()
+			resolve()
+		})
 	}
 	deleteQuestion(questionID){
 		// TODO remove answers about this question
