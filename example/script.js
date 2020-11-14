@@ -181,6 +181,9 @@ class FriendRank {
 
 	exportEverything(){
 		return {
+			metadata: {
+				timeExported: new Date()*1,
+			},
 			people: this.people,
 			questions: this.questions,
 			answers: this.answers,
@@ -399,7 +402,13 @@ function downloadJSON(filename, mimeType, encodedData) {
 	download_a_tag.click()
 }
 function exportEverything(){
-	downloadJSON('everything.json', 'application/json', btoa(JSON.stringify(friend_rank.exportEverything(),null,'\t')))
+	const data = friend_rank.exportEverything()
+
+	const ISOdateString = new Date(data.metadata.timeExported)
+	.toISOString()
+	.replace(/[:.]/g, '-')
+
+	downloadJSON(`friends_full_export-${ISOdateString}.json`, 'application/json', btoa(JSON.stringify(data,null,'\t')))
 }
 
 
