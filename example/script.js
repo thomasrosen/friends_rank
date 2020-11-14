@@ -178,6 +178,14 @@ class FriendRank {
 
 		return people
 	}
+
+	exportEverything(){
+		return {
+			people: this.people,
+			questions: this.questions,
+			answers: this.answers,
+		}
+	}
 }
 
 
@@ -384,6 +392,17 @@ function saveQuestionsRanking(){
 	render_personList()
 }
 
+function downloadJSON(filename, mimeType, encodedData) {
+	const download_a_tag = document.querySelector('#dowloadTrigger')
+	download_a_tag.download = filename
+	download_a_tag.href = `data:${mimeType};base64,${encodedData}`
+	download_a_tag.click()
+
+	// location.href = "data:application/json;base64,"+btoa(JSON.stringify(jsObject))
+}
+function exportEverything(){
+	downloadJSON('everything.json', 'application/json', btoa(JSON.stringify(friend_rank.exportEverything(),null,'\t')))
+}
 
 
 var friend_rank,
