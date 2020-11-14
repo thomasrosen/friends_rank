@@ -349,7 +349,7 @@ async function addPerson(){
 	}
 }
 async function addQuestion(){
-	const textField = document.querySelector('#addQuestion input[name="question"]')
+	const textField = document.querySelector('#addQuestion textarea[name="question"]')
 	const value = textField.value
 	if (value !== '') {
 		await friend_rank.addQuestion({
