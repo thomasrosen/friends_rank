@@ -397,8 +397,6 @@ function downloadJSON(filename, mimeType, encodedData) {
 	download_a_tag.download = filename
 	download_a_tag.href = `data:${mimeType};base64,${encodedData}`
 	download_a_tag.click()
-
-	// location.href = "data:application/json;base64,"+btoa(JSON.stringify(jsObject))
 }
 function exportEverything(){
 	downloadJSON('everything.json', 'application/json', btoa(JSON.stringify(friend_rank.exportEverything(),null,'\t')))
