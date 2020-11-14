@@ -23,7 +23,7 @@ class FriendRank {
 		question = {
 			'questionID': {
 				question: String,
-				ranking: Number,
+				position: Number,
 				timeAdded: Number,
 				// hidden: Boolean,
 			}
@@ -126,7 +126,7 @@ class FriendRank {
 
 			let questionWeight = 1
 			if (!!this.questions[answer.questionID]){
-				questionWeight = this.questions[answer.questionID].ranking
+				questionWeight = this.questions[answer.questionID].position
 			}
 
 			let currentRank = 1
@@ -354,7 +354,7 @@ async function addQuestion(){
 	if (value !== '') {
 		await friend_rank.addQuestion({
 			question: value,
-			ranking: 1,
+			position: 1,
 			timeAdded: new Date()*1,
 		})
 		textField.value = ''
@@ -380,13 +380,13 @@ async function savePersonRanking(){
 function saveQuestionsRanking(){
 	const sortedQuestionIDs = questionSortable.toArray()
 	const stepLength = 1/sortedQuestionIDs.length
-	let currentRank = 1
+	let currentPosition = 1
 	for (const questionID of sortedQuestionIDs) {
 		friend_rank.updateQuestion(questionID, {
 			...friend_rank.questions[questionID],
-			ranking: currentRank,
+			position: currentPosition,
 		})
-		currentRank -= stepLength
+		currentPosition -= stepLength
 	}
 
 	render_personList()
