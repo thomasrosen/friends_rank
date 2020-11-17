@@ -8,80 +8,80 @@
 		<script src="./script.js"></script>
 		<link rel="stylesheet" href="./style.css" />
 	</head>
-	<body>
+	<body role="application" aria-labelledby="pageTitle">
 
-		<h1>Your Friends</h1>
+		<h1 id="pageTitle">Your Friends</h1>
 
-		<fieldset id="personRanking" style="margin:64px auto;">
+		<section id="personRanking" style="margin:64px auto;" class="card">
 			<h2 id="questionForRanking"></h2>
 			<ol class="sortable"></ol>
-			<section class="actions">
+			<div class="actions">
 				<button onclick="render_rankingQuestion()">Skip</button>
 				<button style="float:right;" onclick="savePersonRanking()">Save</button>
-			</section>
-		</fieldset>
+			</div>
+		</section>
 
-		<section class="cards">
+		<div class="cards">
 
-			<fieldset id="addPerson" role="form">
+			<section id="addPerson" role="form" class="card">
 				<h2>Add a new Person</h2>
 				<div class="oneRowStretch">
 					<label for="name">Name:</label>
 					<input id="name" name="name" type="text" placeholder="Thomas Rosen" style="margin-right: 0;"/>
 				</div>
-				<section class="actions">
+				<div class="actions">
 					<span></span>
 					<button style="float:right;" onclick="addPerson()">Add Person</button>
-				</section>
-			</fieldset>
+				</div>
+			</section>
 	
-			<fieldset id="personList">
+			<section id="personList" class="card">
 				<h2>Friend List</h2>
 				<ol></ol>
-			</fieldset>
+			</section>
 
-			<fieldset id="addQuestion" role="form">
+			<section id="addQuestion" role="form" class="card">
 				<h2>Add a new Question</h2>
 				<p>The questions should be about positive emotions or results caused by a person.</p>
 				<div class="oneRowStretch">
 					<label for="question">Question:</label>
 					<textarea id="question" name="question" placeholder="Mit wem möchtest du gerade eher Zeit verbringen?" style="margin-right: 0;"></textarea>
 				</div>
-				<section class="actions">
+				<div class="actions">
 					<span></span>
 					<button style="float:right;" onclick="addQuestion()">Add Question</button>
-				</section>
-			</fieldset>
+				</div>
+			</section>
 	
-			<fieldset id="questionList">
+			<section id="questionList" class="card">
 				<h2>Questions</h2>
 				<ol></ol>
-			</fieldset>
+			</section>
 
 
-			<fieldset>
+			<section class="card">
 				<h2>Download Backup</h2>
 				<p>Export all data as a JSON file.</p>
-				<section class="actions">
+				<div class="actions">
 					<span></span>
 					<button style="float:right;" onclick="exportEverything()">Export Everything</button>
-				</section>
-			</fieldset>
+				</div>
+			</section>
 
-			<fieldset id="importBackup">
+			<section id="importBackup" class="card">
 				<h2>Import Backup</h2>
 				<p>Import a .friends.json file to replace all data.</p>
-				<section class="actions">
+				<div class="actions">
 					<span></span>
 					<label class="fileInput">
 						<input type="file" accept=".json,application/json" style="display:none;"/>
 						<button style="float:right;" onclick="openImportFileInput()">Choose File and Import</button>
 					</label>
-				</section>
-			</fieldset>
+				</div>
+			</section>
 
-			<fieldset style="opacity:0;height:0;padding:0;border-width:0;"></fieldset>
-		</section>
+			<div class="layoutFixer" style="opacity:0;height:0;padding:0;border-width:0;"></div>
+		</div>
 
 		<a id="dowloadTrigger" style="display:none;"></a>
 	</body>
