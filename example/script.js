@@ -1,9 +1,4 @@
 
-
-// store.set('person', { name:'Thomas' })
-// console.log( store.get('person').name == 'Thomas' )
-
-
 class FriendRank {
 
 	people = store.get('people') || {}
@@ -252,7 +247,6 @@ function render_personList(){
 	let people = friend_rank.rankPeople()
 	if (people.length > 0) {
 		personListElement.innerHTML = ''
-		console.log('people', people)
 		for (const personEntry of people) {
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
@@ -358,7 +352,6 @@ function render_questionList(){
 				editEle.style.display = 'none'
 
 				const textareaEle = editEle.querySelector('textarea')
-				console.log('textareaEle', textareaEle.value, textareaEle.innerText)
 				await friend_rank.updateQuestion(questionID, {
 					...questionEntry[1],
 					question: textareaEle.value,
@@ -518,10 +511,6 @@ function importBackup(fileList){
 			encoding: 'utf-8',
 		})
 		reader.addEventListener('load', async event => {
-			let data = event.target.result
-			console.log('data', data)
-			data = JSON.parse(data)
-			console.log('json', data)
 			await friend_rank.import(JSON.parse(event.target.result))
 			render()
 		})
