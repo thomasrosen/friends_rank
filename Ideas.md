@@ -13,3 +13,9 @@ Mit wem geh ich am ehesten auf eine Demo?
 Mit wem würde ich gerne verreisen?
 Wer ist immer für mich da?
 Wen hab ich als letztes gesehen?
+
+## Emotions
+Ask how I feel currently.
+I could then try to correlate this to the people/pets I meet, the things I did and the places I visited.
+
+
