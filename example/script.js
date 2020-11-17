@@ -192,6 +192,15 @@ class FriendRank {
 			answers: this.answers,
 		}
 	}
+	import(object){
+		return new Promise(async (resolve)=>{
+			this.people = object.people || {}
+			this.questions = object.questions || {}
+			this.answers = object.answers || []
+			await this.saveData()
+			resolve()
+		})
+	}
 }
 
 
@@ -423,6 +432,76 @@ function exportEverything(){
 
 	downloadJSON(`full-export-${ISOdateString}.friends.json`, 'application/json', base64EncodeUnicode(JSON.stringify(data,null,'\t')))
 }
+function importBackup(fileList){
+	if (fileList < 1) {
+		alert('No file provided.')
+	}
+
+	const file = fileList[0]
+
+	// Check if the file is a text or json file. 
+	if (
+		!(!!file.type)
+		|| (
+			!!file.type
+			&& (
+				file.type.indexOf('text') !== -1
+				|| file.type.indexOf('json') !== -1
+			)
+		)
+	) {
+		const reader = new FileReader({
+			encoding: 'utf-8',
+		})
+		reader.addEventListener('load', async event => {
+			let data = event.target.result
+			console.log('data', data)
+			data = JSON.parse(data)
+			console.log('json', data)
+			await friend_rank.import(JSON.parse(event.target.result))
+			render()
+		})
+		reader.readAsText(file, 'utf-8')
+	}else{
+		alert('File is not a text or json file.')
+	}
+}
+function init_importBackup(){
+
+	const importBackupElement = document.querySelector('#importBackup')
+
+	const fileInputElement = importBackupElement.querySelector('input[type="file"]')
+	fileInputElement.addEventListener('change', (event) => {
+		const fileList = event.target.files;
+		importBackup(fileList)
+	})
+	
+	importBackupElement.addEventListener('dragover', (event) => {
+		event.stopPropagation()
+		event.preventDefault()
+		// Style the drag-and-drop as a "copy file" operation.
+		event.dataTransfer.dropEffect = 'copy'
+		importBackupElement.classList.add('focus')
+	})
+	
+	importBackupElement.addEventListener('drop', (event) => {
+		event.stopPropagation()
+		event.preventDefault()
+		const fileList = event.dataTransfer.files
+		importBackup(fileList)
+		importBackupElement.classList.remove('focus')
+	})
+	
+	importBackupElement.addEventListener('dragend', (event) => {
+		importBackupElement.classList.remove('focus')
+	})
+	importBackupElement.addEventListener('dragleave', (event) => {
+		importBackupElement.classList.remove('focus')
+	})
+}
+function openImportFileInput(event){
+	const fileInputElement = document.querySelector('#importBackup input[type="file"]')
+	fileInputElement.click()
 }
 
 
@@ -447,6 +526,7 @@ function start(){
 	})
 
 	render()
+	init_importBackup()
 }
 
 window.addEventListener('load', ()=>{

@@ -65,7 +65,18 @@
 					<span></span>
 					<button style="float:right;" onclick="exportEverything()">Export Everything</button>
 				</section>
+			</fieldset>
 
+			<fieldset id="importBackup">
+				<h2>Import Backup</h2>
+				<p>Import a .friends.json file to replace all data.</p>
+				<section class="actions">
+					<span></span>
+					<label class="fileInput">
+						<input type="file" accept=".json,application/json" style="display:none;"/>
+						<button style="float:right;" onclick="openImportFileInput()">Choose File and Import</button>
+					</label>
+				</section>
 			</fieldset>
 
 			<fieldset style="opacity:0;height:0;padding:0;border-width:0;"></fieldset>
