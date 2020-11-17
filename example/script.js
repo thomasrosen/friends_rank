@@ -516,7 +516,7 @@ function importBackup(fileList){
 		})
 		reader.readAsText(file, 'utf-8')
 	}else{
-		alert('File is not a text or json file.')
+		alert('Please use a .friends.json file.')
 	}
 }
 function init_importBackup(){
