@@ -404,6 +404,16 @@ function downloadJSON(filename, mimeType, encodedData) {
 	download_a_tag.href = `data:${mimeType};base64,${encodedData}`
 	download_a_tag.click()
 }
+function base64EncodeUnicode(str) {
+	// SOURCE: https://www.base64encoder.io/javascript/
+	// First we escape the string using encodeURIComponent to get the UTF-8 encoding of the characters, 
+	// then we convert the percent encodings into raw bytes, and finally feed it to btoa() function.
+	utf8Bytes = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+		return String.fromCharCode('0x' + p1)
+	})
+
+	return btoa(utf8Bytes)
+}
 function exportEverything(){
 	const data = friend_rank.exportEverything()
 
@@ -411,7 +421,8 @@ function exportEverything(){
 	.toISOString()
 	.replace(/[:.]/g, '-')
 
-	downloadJSON(`friends_full_export-${ISOdateString}.json`, 'application/json', btoa(JSON.stringify(data,null,'\t')))
+	downloadJSON(`full-export-${ISOdateString}.friends.json`, 'application/json', base64EncodeUnicode(JSON.stringify(data,null,'\t')))
+}
 }
 
 
