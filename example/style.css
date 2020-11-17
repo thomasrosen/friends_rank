@@ -169,8 +169,12 @@ ol{
 ol li{
 	padding: 2px;
 }
-ol.movableItems li{
+ol.sortable li{
 	cursor: move;
+}
+ol.sortable li.sortable-ghost{
+	background: var(--secondary-background-color);
+	border-radius: 3px;
 }
 .actionRow{
 	display: flex;

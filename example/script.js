@@ -343,7 +343,7 @@ function render_questionList(){
 			editButton.addEventListener('click', ()=>{
 				viewEle.style.display = 'none'
 				editEle.style.display = 'flex'
-				questionSortable.destroy()
+				questions_removeSortable()
 			})
 
 			const saveButton = editEle.querySelector('.saveButton')
@@ -567,10 +567,15 @@ function render(){
 	render_questionList()
 	render_rankingQuestion()
 }
-function questionAddSortable(){
+function questions_addSortable(){
 	questionSortable = Sortable.create(questionListElement, {
 		onEnd: () => saveQuestionsRanking(),
 	})
+	questionListElement.classList.add('sortable')
+}
+function questions_removeSortable(){
+	questionSortable.destroy()
+	questionListElement.classList.remove('sortable')
 }
 function start(){
 	friend_rank = new FriendRank()
@@ -579,7 +584,7 @@ function start(){
 	personRankingSortable = Sortable.create(personRankingListElement)
 
 	questionListElement = document.querySelector('#questionList ol')
-	questionAddSortable()
+	questions_addSortable()
 
 	render()
 	init_importBackup()
