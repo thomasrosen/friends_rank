@@ -44,66 +44,69 @@ class FriendRank {
 	}
 	
 	saveData(){
-		store.set('people', this.people)
-		store.set('questions', this.questions)
-		store.set('answers', this.answers)
+		return new Promise((resolve)=>{
+			store.set('people', this.people)
+			store.set('questions', this.questions)
+			store.set('answers', this.answers)
+			resolve()
+		})
 	}
 
 	addPerson(personObj){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			const newPersonID = this.uuidv4()
 			this.people[newPersonID] = personObj
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 	updatePerson(personID, newPersonObj){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			this.people[personID] = newPersonObj
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 	deletePerson(personID_to_delete){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			this.answers = this.answers.map(answer => ({
 				...answer,
 				sortedPersonIDs: sortedPersonIDs.filter(personID => personID !== personID_to_delete)
 			}))
 			delete this.people[personID_to_delete]
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 
 	addQuestion(questionObj){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			const newQuestionID = this.uuidv4()
 			this.questions[newQuestionID] = questionObj
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 	updateQuestion(questionID, newQuestionObj){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			this.questions[questionID] = newQuestionObj
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 	deleteQuestion(questionID_to_delete){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			this.answers = this.answers.filter(answer => answer.questionID !== questionID_to_delete)
 			delete this.questions[questionID_to_delete]
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
 
 	addAnswer(answerObj){
-		return new Promise((resolve)=>{
+		return new Promise(async (resolve)=>{
 			this.answers.push(answerObj)
-			this.saveData()
+			await this.saveData()
 			resolve()
 		})
 	}
