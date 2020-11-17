@@ -134,21 +134,21 @@ textarea{
 	transition: box-shadow .2s ease, color .2s ease;
 }
 input[type="text"]{
-	box-shadow: inset 0 -1px 0 0 var(--border-color)
+	box-shadow: inset 0 -1px 0 0 var(--border-color);
 }
 input[type="text"]:active,
 input[type="text"]:focus{
-	box-shadow: inset 0 -2px 0 0 var(--secondary-color)
+	box-shadow: inset 0 -2px 0 0 var(--secondary-color);
 }
 textarea{
 	border-width: 1px;
 	resize: none;
 	height: 96px;
-	box-shadow: inset 0 0 0 1px var(--border-color)
+	box-shadow: inset 0 0 0 1px var(--border-color);
 }
 textarea:active,
 textarea:focus{
-	box-shadow: inset 0 0 0 2px var(--secondary-color)
+	box-shadow: inset 0 0 0 2px var(--secondary-color);
 }
 
 
