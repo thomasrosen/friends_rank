@@ -358,7 +358,7 @@ function render_questionList(){
 				})
 				render_questionList()
 				render_rankingQuestion()
-				questionAddSortable()
+				questions_addSortable()
 			})
 
 			questionListElement.appendChild(newQuestionElement)
