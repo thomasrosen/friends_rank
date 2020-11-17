@@ -419,7 +419,11 @@ var friend_rank,
 personRankingListElement, personRankingSortable,
 questionListElement, questionSortable
 
-
+function render(){
+	render_personList()
+	render_questionList()
+	render_rankingQuestion()
+}
 function start(){
 	friend_rank = new FriendRank()
 
@@ -431,9 +435,7 @@ function start(){
 		onEnd: () => saveQuestionsRanking(),
 	})
 
-	render_personList()
-	render_questionList()
-	render_rankingQuestion()
+	render()
 }
 
 window.addEventListener('load', ()=>{
