@@ -1,6 +1,8 @@
 # Ideas
 
 ## Questions
+The questions should be about positive emotions or results caused by a person.
+
 Mit wem möchte ich am meisten Zeit verbringen?
 Wer bringt mich zum Lachen? / Mit wem lache ich oft?
 Wer motiviert mich?
