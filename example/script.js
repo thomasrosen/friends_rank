@@ -229,8 +229,10 @@ function getRandomIntInclusive(min, max) {
 
 
 
+const editButtonSVG = '<svg class="editButton" viewBox="0 0 24 24" width="16px" height="16px"><path d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
 const deleteButtonSVG = '<svg class="deleteButton" viewBox="0 0 24 24" width="18px" height="18px"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zm3.17-7.83c.39-.39 1.02-.39 1.41 0L12 12.59l1.42-1.42c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 14l1.42 1.42c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0L12 15.41l-1.42 1.42c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 14l-1.42-1.42c-.39-.38-.39-1.02 0-1.41zM15.5 4l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1h-2.5z"/></svg>'
 const moveButtonSVG = '<svg class="moveButton" viewBox="0 0 24 24" width="18px" height="18px"><path d="M19 9H5c-.55 0-1 .45-1 1s.45 1 1 1h14c.55 0 1-.45 1-1s-.45-1-1-1zM5 15h14c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1 .45-1 1s.45 1 1 1z"/></svg>'
+const saveButtonSVG = '<svg class="saveButton" viewBox="0 0 24 24" width="20px" height="20px"><path d="M9 16.2l-3.5-3.5c-.39-.39-1.01-.39-1.4 0-.39.39-.39 1.01 0 1.4l4.19 4.19c.39.39 1.02.39 1.41 0L20.3 7.7c.39-.39.39-1.01 0-1.4-.39-.39-1.01-.39-1.4 0L9 16.2z"/></svg>'
 
 async function deletePerson(personID){
 	await friend_rank.deletePerson(personID)
@@ -251,19 +253,49 @@ function render_personList(){
 	if (people.length > 0) {
 		personListElement.innerHTML = ''
 		console.log('people', people)
-		for (const entry of people) {
+		for (const personEntry of people) {
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
-				<div class="oneRowStretch">
-					<div style="width: 100%;">${entry.name}</div>
+				<div class="view oneRowStretch">
+					<div style="width: 100%;margin: 0 8px;">${personEntry.name}</div>
 					<div class="actionRow">
+						${editButtonSVG}
 						${deleteButtonSVG}
+					</div>
+				</div>
+				<div class="edit oneRowStretch" style="display:none;">
+					<input style="width: 100%;margin: -8px 0 4px 0;" type="text" value="${personEntry.name}" />
+					<div class="actionRow">
+						${saveButtonSVG}
 					</div>
 				</div>
 			`
 
-			const deleteButton = newPersonElement.querySelector('.deleteButton')
-			deleteButton.addEventListener('click', ()=>deletePerson(entry.personID))
+			const viewEle = newPersonElement.querySelector('.view')
+			const editEle = newPersonElement.querySelector('.edit')
+
+			const deleteButton = viewEle.querySelector('.deleteButton')
+			deleteButton.addEventListener('click', ()=>deletePerson(personEntry.personID))
+
+			const editButton = viewEle.querySelector('.editButton')
+			editButton.addEventListener('click', ()=>{
+				viewEle.style.display = 'none'
+				editEle.style.display = 'flex'
+			})
+
+			const saveButton = editEle.querySelector('.saveButton')
+			saveButton.addEventListener('click', async ()=>{
+				viewEle.style.display = 'flex'
+				editEle.style.display = 'none'
+
+				const inputEle = editEle.querySelector('input[type="text"]')
+				await friend_rank.updatePerson(personEntry.personID, {
+					...personEntry,
+					name: inputEle.value,
+				})
+				render_personList()
+				render_rankingQuestion()
+			})
 
 			personListElement.appendChild(newPersonElement)
 		}
@@ -286,22 +318,55 @@ function render_questionList(){
 		})
 
 		questionListElement.innerHTML = ''
-		for (const entry of questions) {
-			const questionID = entry[0]
+		for (const questionEntry of questions) {
+			const questionID = questionEntry[0]
 			const newQuestionElement = document.createElement('li')
 			newQuestionElement.setAttribute('data-id', questionID)
 			newQuestionElement.innerHTML = `
-				<div class="oneRowStretch">
-					<div style="width: 100%;">${entry[1].question}</div>
+				<div class="view oneRowStretch">
+					<div style="width: 100%;margin: 0 8px;">${questionEntry[1].question}</div>
 					<div class="actionRow">
-						${deleteButtonSVG}
 						${moveButtonSVG}
+						${editButtonSVG}
+						${deleteButtonSVG}
+					</div>
+				</div>
+				<div class="edit oneRowStretch" style="display:none;">
+					<textarea style="width: 100%;margin: -8px 0 4px 0;">${questionEntry[1].question}</textarea>
+					<div class="actionRow">
+						${saveButtonSVG}
 					</div>
 				</div>
 			`
 
-			const deleteButton = newQuestionElement.querySelector('.deleteButton')
+			const viewEle = newQuestionElement.querySelector('.view')
+			const editEle = newQuestionElement.querySelector('.edit')
+
+			const deleteButton = viewEle.querySelector('.deleteButton')
 			deleteButton.addEventListener('click', ()=>deleteQuestion(questionID))
+
+			const editButton = viewEle.querySelector('.editButton')
+			editButton.addEventListener('click', ()=>{
+				viewEle.style.display = 'none'
+				editEle.style.display = 'flex'
+				questionSortable.destroy()
+			})
+
+			const saveButton = editEle.querySelector('.saveButton')
+			saveButton.addEventListener('click', async ()=>{
+				viewEle.style.display = 'flex'
+				editEle.style.display = 'none'
+
+				const textareaEle = editEle.querySelector('textarea')
+				console.log('textareaEle', textareaEle.value, textareaEle.innerText)
+				await friend_rank.updateQuestion(questionID, {
+					...questionEntry[1],
+					question: textareaEle.value,
+				})
+				render_questionList()
+				render_rankingQuestion()
+				questionAddSortable()
+			})
 
 			questionListElement.appendChild(newQuestionElement)
 		}
@@ -513,6 +578,11 @@ function render(){
 	render_questionList()
 	render_rankingQuestion()
 }
+function questionAddSortable(){
+	questionSortable = Sortable.create(questionListElement, {
+		onEnd: () => saveQuestionsRanking(),
+	})
+}
 function start(){
 	friend_rank = new FriendRank()
 
@@ -520,9 +590,7 @@ function start(){
 	personRankingSortable = Sortable.create(personRankingListElement)
 
 	questionListElement = document.querySelector('#questionList ol')
-	questionSortable = Sortable.create(questionListElement, {
-		onEnd: () => saveQuestionsRanking(),
-	})
+	questionAddSortable()
 
 	render()
 	init_importBackup()

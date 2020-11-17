@@ -179,7 +179,8 @@ ol.movableItems li{
 }
 .editButton,
 .deleteButton,
-.moveButton{
+.moveButton,
+.saveButton{
 	cursor: pointer;
 	margin: 0 2px;
 	fill:var(--text-color);
