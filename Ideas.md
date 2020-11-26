@@ -12,7 +12,7 @@ Wer unterstützten mich?
 Mit wem geh ich am ehesten auf eine Demo?
 Mit wem würde ich gerne verreisen?
 Wer ist immer für mich da?
-Wen hab ich als letztes gesehen?
+Wen hab ich als letztes face2face im Reallife gesehen?
 Mit wem habe ich zuletz interagiert?
 Mit wem würde ich gerne zusammen wohnen?
 
