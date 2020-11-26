@@ -57,7 +57,10 @@ class FriendRank {
 	}
 	updatePerson(personID, newPersonObj){
 		return new Promise(async (resolve)=>{
-			this.people[personID] = newPersonObj
+			this.people[personID] = {
+				...this.people[personID], // currently only allow name changes
+				name: newPersonObj.name,
+			}
 			await this.saveData()
 			resolve()
 		})
