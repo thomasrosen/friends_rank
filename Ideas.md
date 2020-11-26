@@ -13,6 +13,7 @@ Mit wem geh ich am ehesten auf eine Demo?
 Mit wem würde ich gerne verreisen?
 Wer ist immer für mich da?
 Wen hab ich als letztes gesehen?
+Mit wem habe ich zuletz interagiert?
 Mit wem würde ich gerne zusammen wohnen?
 
 ## Emotions
