@@ -87,7 +87,11 @@ class FriendRank {
 	}
 	updateQuestion(questionID, newQuestionObj){
 		return new Promise(async (resolve)=>{
-			this.questions[questionID] = newQuestionObj
+			this.questions[questionID] = {
+				...this.questions[questionID], // currently only allow question and position changes
+				question: newQuestionObj.question,
+				position: newQuestionObj.position,
+			}
 			await this.saveData()
 			resolve()
 		})
