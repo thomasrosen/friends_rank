@@ -131,7 +131,7 @@ class FriendRank {
 
 			let questionWeight = 1
 			if (!!this.questions[answer.questionID]){
-				questionWeight = this.questions[answer.questionID].position
+				questionWeight = this.questions[answer.questionID].position*0.5+0.5
 			}
 
 			let currentRank = 1
