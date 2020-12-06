@@ -83,6 +83,44 @@
 			<div class="layoutFixer" style="opacity:0;height:0;padding:0;border-width:0;"></div>
 		</div>
 
+		<div class="dialog" id="personEditor" hidden>
+			<div class="backdrop"></div>
+			<div class="content">
+				<section id="_personRanking" style="margin:64px auto;" class="card">
+					<h2>Edit Person</h2>
+
+					<input name="personID" type="hidden" value=""/>
+
+					<hr style="margin: 32px;height:0px;" />
+
+					<label class="oneRowStretch middle">
+						<span class="label">Name:</span>
+						<input name="name" type="text" style="margin-right: 0;"/>
+					</label>
+
+					<label class="oneRowStretch middle">
+						<span class="label">Birthday:</span>
+						<input name="birthday" type="text" placeholder="YYYY-MM-DD HH:mm:ss" style="margin-right: 0;"/>
+					</label>
+
+					<hr style="margin: 32px;height:0px;" />
+
+					<div id="socials"></div>
+
+					<hr style="margin: 32px;height:0px;" />
+
+					<button id="deleteButton" onclick="deletePerson()" class="caution">Delete Person</button>
+
+					<hr style="margin: 32px;height:0px;" />
+
+					<div class="actions">
+						<button onclick="exitPersonEditor()">Cancel</button>
+						<button style="float:right;" onclick="savePersonEditor()">Save</button>
+					</div>
+				</section>
+			</div>
+		</div>
+
 		<a id="dowloadTrigger" style="display:none;"></a>
 	</body>
 </html>

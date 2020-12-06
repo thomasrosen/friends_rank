@@ -13,6 +13,16 @@ class FriendRank {
 				name: String,
 				timeAdded: Number,
 				// hidden: Boolean,
+
+				birthday: String, // ISO standard. Unkown parts are in underscores.
+				birthday_ts: Number, // Best timestamp estimate for the birthday-string.
+
+				socials: {
+					twitter: String,
+					facebook: String,
+					instagram: String,
+					github: String,
+				},
 			}
 		}
 		question = {
@@ -30,6 +40,8 @@ class FriendRank {
 				timeAdded: Number,
 			}
 		]
+
+
 	*/
 	
 	uuidv4() {
@@ -59,6 +71,7 @@ class FriendRank {
 		return new Promise(async (resolve)=>{
 			this.people[personID] = {
 				...this.people[personID], // currently only allow name changes
+				socials: newPersonObj.socials,
 				name: newPersonObj.name,
 			}
 			await this.saveData()
@@ -67,10 +80,13 @@ class FriendRank {
 	}
 	deletePerson(personID_to_delete){
 		return new Promise(async (resolve)=>{
-			this.answers = this.answers.map(answer => ({
+			this.answers = this.answers
+			.map(answer => ({
 				...answer,
-				sortedPersonIDs: sortedPersonIDs.filter(personID => personID !== personID_to_delete)
+				sortedPersonIDs: answer.sortedPersonIDs.filter(personID => personID !== personID_to_delete)
 			}))
+			.filter(answer => answer.sortedPersonIDs.length > 0)
+
 			delete this.people[personID_to_delete]
 			await this.saveData()
 			resolve()
@@ -257,45 +273,13 @@ function render_personList(){
 		for (const personEntry of people) {
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
-				<div class="view oneRowStretch">
+				<div class="oneRowStretch" style="cursor: pointer;">
 					<div style="width: 100%;margin: 0 8px;">${personEntry.name}</div>
-					<div class="actionRow">
-						${editButtonSVG}
-						${deleteButtonSVG}
-					</div>
-				</div>
-				<div class="edit oneRowStretch" style="display:none;" role="form">
-					<input role="textbox" style="width: 100%;margin: -8px 0 4px 0;" type="text" value="${personEntry.name}" />
-					<div class="actionRow">
-						${saveButtonSVG}
-					</div>
 				</div>
 			`
 
-			const viewEle = newPersonElement.querySelector('.view')
-			const editEle = newPersonElement.querySelector('.edit')
-
-			const deleteButton = viewEle.querySelector('.deleteButton')
-			deleteButton.addEventListener('click', ()=>deletePerson(personEntry.personID))
-
-			const editButton = viewEle.querySelector('.editButton')
-			editButton.addEventListener('click', ()=>{
-				viewEle.style.display = 'none'
-				editEle.style.display = 'flex'
-			})
-
-			const saveButton = editEle.querySelector('.saveButton')
-			saveButton.addEventListener('click', async ()=>{
-				viewEle.style.display = 'flex'
-				editEle.style.display = 'none'
-
-				const inputEle = editEle.querySelector('input[type="text"]')
-				await friend_rank.updatePerson(personEntry.personID, {
-					...personEntry,
-					name: inputEle.value,
-				})
-				render_personList()
-				render_rankingQuestion()
+			newPersonElement.addEventListener('click', ()=>{
+				openPersonEditor(personEntry.personID)
 			})
 
 			personListElement.appendChild(newPersonElement)
@@ -412,6 +396,80 @@ function render_rankingQuestion(){
 	}else{
 		document.querySelector('#personRanking').style.display = 'none'
 	}
+}
+
+
+function openPersonEditor(personID){
+	console.log('personID', personID)
+	render_personEditor(personID)
+	const personEditor = document.querySelector('#personEditor')
+	personEditor.removeAttribute('hidden')
+}
+function exitPersonEditor(){
+	const personEditor = document.querySelector('#personEditor')
+	personEditor.setAttribute('hidden', 'hidden')
+}
+const socials = {
+	instagram: 'Instagram',
+	twitter: 'Twitter',
+	github: 'GitHub',
+	facebook: 'Facebook',
+}
+function render_personEditor(personID){
+	const personDoc = friend_rank.people[personID] || {}
+
+	console.log('personDoc', personDoc)
+
+	const personIDElement = document.querySelector('#personEditor [name="personID"]')
+	personIDElement.value = personID
+
+	const nameElement = document.querySelector('#personEditor [name="name"]')
+	nameElement.value = personDoc.name || ''
+
+	let socialsValues = personDoc.socials || {}
+	let socialsHTML = ''
+	for (const socialsEntry of Object.entries(socials)) {
+		socialsHTML += `
+			<label class="oneRowStretch middle">
+				<span class="label">${socialsEntry[1]}:</span>
+				<input value="${socialsValues[socialsEntry[0]] || ''}" name="${socialsEntry[0]}" type="text" style="margin-right: 0;"/>
+			</label>
+		`
+	}
+	const socialsElement = document.querySelector('#personEditor #socials')
+	socialsElement.innerHTML = socialsHTML
+
+	const deleteButton = document.querySelector('#personEditor #deleteButton')
+	deleteButton.addEventListener('click', ()=>{
+		// console.log('del-personID', personID)
+		deletePerson(personID)
+		exitPersonEditor()
+	})
+}
+async function savePersonEditor(){
+	let newDoc = {}
+
+	const personIDElement = document.querySelector('#personEditor [name="personID"]')
+	const personID = personIDElement.value
+
+	const nameElement = document.querySelector('#personEditor [name="name"]')
+	newDoc.name = nameElement.value
+
+	let socialsValues = {}
+	for (const socialsEntry of Object.entries(socials)) {
+		const socialName = socialsEntry[0]
+
+		const socialElement = document.querySelector('#personEditor [name="'+socialName+'"]')
+		if (socialElement.value !== '') {
+			socialsValues[socialName] = socialElement.value
+		}
+	}
+	newDoc.socials = socialsValues
+
+	await friend_rank.updatePerson(personID, newDoc)
+	render_personList()
+	render_rankingQuestion()
+	exitPersonEditor()
 }
 
 async function addPerson(){

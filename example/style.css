@@ -124,6 +124,18 @@ button, input[type="submit"]{
 	border-radius: 3px;
 	*/
 }
+button.caution{
+	border-radius: 3px;
+	border: none;
+	background: #F33;
+	padding: 4px 8px;
+}
+button.caution:focus{
+	box-shadow: 0 0 2px 4px rgba(100,120,255,0.5);
+}
+button.caution:active{
+	background: #C33;
+}
 input[type="text"],
 textarea{
 	padding: 8px;
@@ -213,6 +225,26 @@ h2{
 	font-weight: 500;
 	font-size: 20px;
 	letter-spacing: 0.15px;
+}
+
+
+
+.dialog{
+	z-index: 9;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: auto;
+	background: rgba(0,0,0,0.6);
+	backdrop-filter: blur(32px);
+}
+.dialog[hidden]{
+	display: none;
+}
+.dialog .label{
+	width: 128px;
 }
 
 
