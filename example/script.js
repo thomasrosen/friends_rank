@@ -169,9 +169,21 @@ class FriendRank {
 		}, {})
 
 		people = Object.entries(people)
-		.map(personEntry => ({
+
+		const max_answer_count = Math.max(
+			...(people.map(person => person[1].count))
+		)
+		const min_answer_count = Math.min(
+			...(people.map(person => person[1].count))
+		)
+		const avarege_answer_count = max_answer_count*0.5 // /min_answer_count
+
+		people = people.map(personEntry => ({
 			personID: personEntry[0],
-			score: personEntry[1].score / personEntry[1].count,
+			opacity: personEntry[1].score / max_answer_count,
+			score: personEntry[1].score / avarege_answer_count,
+			count: personEntry[1].count,
+			value: personEntry[1],
 			name: this.people[personEntry[0]].name,
 			timeAdded: this.people[personEntry[0]].timeAdded,
 		}))
