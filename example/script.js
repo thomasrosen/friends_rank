@@ -286,7 +286,8 @@ function render_personList(){
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
 				<div class="oneRowStretch" style="cursor: pointer;">
-					<div style="width: 100%;margin: 0 8px;">${personEntry.name}</div>
+					<div style="width: 100%;">${personEntry.name}</div>
+					<span class="rankingInfos" style="opacity:${personEntry.opacity || 0};">${Math.round(personEntry.score*100)}</span>
 				</div>
 			`
 

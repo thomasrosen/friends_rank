@@ -264,3 +264,9 @@ h2{
 }
 
 
+.rankingInfos{
+	display: inline-block;
+	text-align: right;
+}
+
+
