@@ -400,7 +400,6 @@ function render_rankingQuestion(){
 
 
 function openPersonEditor(personID){
-	console.log('personID', personID)
 	render_personEditor(personID)
 	const personEditor = document.querySelector('#personEditor')
 	personEditor.removeAttribute('hidden')
@@ -417,8 +416,6 @@ const socials = {
 }
 function render_personEditor(personID){
 	const personDoc = friend_rank.people[personID] || {}
-
-	console.log('personDoc', personDoc)
 
 	const personIDElement = document.querySelector('#personEditor [name="personID"]')
 	personIDElement.value = personID
@@ -441,7 +438,6 @@ function render_personEditor(personID){
 
 	const deleteButton = document.querySelector('#personEditor #deleteButton')
 	deleteButton.addEventListener('click', ()=>{
-		// console.log('del-personID', personID)
 		deletePerson(personID)
 		exitPersonEditor()
 	})
