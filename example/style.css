@@ -169,22 +169,26 @@ p{
 	padding: 2px 0;
 }
 
-ul{
+ul,
+ol{
 	margin: 8px 0;
+	padding: 0 0 0 32px;
+	transition: opacity .2s ease;
+}
+ul{
 	list-style-type: none;
 }
-
 ol{
 	list-style-type: decimal;
-	margin: 8px 0;
-	padding: 0 0 0 20px;
 }
 ol li{
 	padding: 2px;
 }
+ul.sortable li,
 ol.sortable li{
 	cursor: move;
 }
+ul.sortable li.sortable-ghost,
 ol.sortable li.sortable-ghost{
 	background: var(--secondary-background-color);
 	border-radius: 3px;

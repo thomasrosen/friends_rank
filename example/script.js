@@ -145,10 +145,10 @@ class FriendRank {
 			const sortedPersonIDs = answer.sortedPersonIDs
 			const stepLength = 1/sortedPersonIDs.length
 
-			let questionWeight = 1
-			if (!!this.questions[answer.questionID]){
-				questionWeight = this.questions[answer.questionID].position*0.5+0.5
-			}
+			// let questionWeight = 1
+			// if (!!this.questions[answer.questionID]){
+			// 	questionWeight = this.questions[answer.questionID].position*0.5+0.5
+			// }
 
 			let currentRank = 1
 			for (const personID of sortedPersonIDs) {
@@ -159,7 +159,7 @@ class FriendRank {
 					}
 				}
 				
-				people[personID].score += currentRank * questionWeight
+				people[personID].score += currentRank // * questionWeight
 				people[personID].count += 1
 
 				currentRank -= stepLength
@@ -648,7 +648,7 @@ function start(){
 	personRankingListElement = document.querySelector('#personRanking ol')
 	personRankingSortable = Sortable.create(personRankingListElement)
 
-	questionListElement = document.querySelector('#questionList ol')
+	questionListElement = document.querySelector('#questionList ul')
 	questions_addSortable()
 
 	render()
