@@ -181,8 +181,20 @@ ul{
 ol{
 	list-style-type: decimal;
 }
+
+ul:hover li,
+ol:hover li{
+	opacity: 0.6;
+}
+ul:hover li:hover,
+ol:hover li:hover{
+	opacity: 1;
+}
+
+ul li,
 ol li{
 	padding: 2px;
+	transition: opacity .2s ease;
 }
 ul.sortable li,
 ol.sortable li{
