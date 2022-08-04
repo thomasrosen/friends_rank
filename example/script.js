@@ -308,7 +308,7 @@ function render_questionList(){
 	let questions = Object.entries(friend_rank.questions)
 	if (questions.length > 0) {
 		questions = questions.sort((a, b) => {
-			const n = b[1].ranking - a[1].ranking
+			const n = b[1].position - a[1].position
 			if (n !== 0) {
 				return n
 			}
