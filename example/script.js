@@ -302,7 +302,7 @@ function render_personList(){
 	}
 }
 
-function render_questionList(){
+function render_questionList() {
 	// const questionListElement = document.querySelector('#questionList ul')
 
 	let questions = Object.entries(friend_rank.questions)
