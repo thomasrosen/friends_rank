@@ -223,6 +223,13 @@ ol.sortable li.sortable-ghost{
 }
 
 
+.boundary {
+	margin-block-start: 8px;
+	margin-block-end: 4px;
+	margin-inline-start: -32px;
+}
+
+
 h1{
 	margin: 64px auto;
 	text-align: center;

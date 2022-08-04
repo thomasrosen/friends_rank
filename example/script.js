@@ -263,7 +263,20 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
 }
 
-
+function stringToColor(str) {
+	// source question: https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+	// source answer: https://stackoverflow.com/a/3426956/2387277
+	let hash = 0;
+	for (let i = 0; i < str.length; i++) {
+		hash = str.charCodeAt(i) + ((hash << 5) - hash);
+	}
+	let colour = '#';
+	for (let i = 0; i < 3; i++) {
+		const value = (hash >> (i * 8)) & 0xFF;
+		colour += ('00' + value.toString(16)).substr(-2);
+	}
+	return colour;
+}
 
 const editButtonSVG = '<svg class="editButton" role="button" viewBox="0 0 24 24" width="16px" height="16px"><path d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
 const deleteButtonSVG = '<svg class="deleteButton" role="button" viewBox="0 0 24 24" width="18px" height="18px"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zm3.17-7.83c.39-.39 1.02-.39 1.41 0L12 12.59l1.42-1.42c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 14l1.42 1.42c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0L12 15.41l-1.42 1.42c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 14l-1.42-1.42c-.39-.38-.39-1.02 0-1.41zM15.5 4l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1h-2.5z"/></svg>'
@@ -282,13 +295,49 @@ async function deleteQuestion(questionID){
 	render_rankingQuestion()
 }
 
+const friendBoundaries = {
+	// SOURCE: https://ideas.ted.com/how-many-friends-do-most-people-dunbars-number/
+	// NOTE: These are not real boundaries, but they are close enough to maybe be useful.
+
+	0: '', // This is needed for the alogrithm to show the headings correctly.
+	// 1: 'Special',
+	5: 'Very close',
+	15: 'Best Friends',
+	50: 'Friends',
+	150: 'Casual Friends',
+	500: 'Acquaintances',
+}
+const friendBoundariesAmounts = Object.keys(friendBoundaries).map(key => parseInt(key))
+
 function render_personList(){
 	const personListElement = document.querySelector('#personList ol')
 
 	let people = friend_rank.rankPeople()
 	if (people.length > 0) {
 		personListElement.innerHTML = ''
-		for (const personEntry of people) {
+		let peopleSinceLastHeading = 0
+		for (let personPosition = 0; personPosition < people.length; personPosition+=1) {
+			const personEntry = people[personPosition]
+
+			// add friend boundary headings
+			let summedFriendBoundaryAmounts = 0
+			for (let i = 0; i < friendBoundariesAmounts.length; i++) {
+				const friendBoundariesAmount = friendBoundariesAmounts[i]
+				summedFriendBoundaryAmounts += friendBoundariesAmount
+				if (peopleSinceLastHeading === summedFriendBoundaryAmounts) {
+					const friendBoundariesAmountNext = friendBoundariesAmounts[i + 1]
+					if (friendBoundaries.hasOwnProperty(friendBoundariesAmountNext)) {
+						const boundaryElement = document.createElement('h5')
+						boundaryElement.classList.add('boundary')
+						boundaryElement.innerHTML = `${friendBoundaries[friendBoundariesAmountNext]}`
+						personListElement.appendChild(boundaryElement)
+					}
+				}
+			}
+			peopleSinceLastHeading += 1
+
+			const hashtags_array = [] // personEntry.hashtags_array || []
+
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
 				<div class="oneRowStretch" style="cursor: pointer;">
