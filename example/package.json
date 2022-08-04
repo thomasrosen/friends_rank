@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "http": "^0.0.1-security",
+    "node-static": "^0.7.11",
     "sortablejs": "^1.12.0",
     "store": "^2.0.12"
   }
