@@ -170,6 +170,12 @@ class FriendRank {
 
 		people = Object.entries(people)
 
+		people = people
+			.map(person => {
+				person[1].score = (person[1].score/person[1].count)*10
+				return person
+			})
+
 		const max_answer_count = Math.max(
 			...(people.map(person => person[1].count))
 		)
