@@ -5,4 +5,6 @@ var file = new(static.Server)(__dirname);
 
 http.createServer(function (req, res) {
   file.serve(req, res);
-}).listen(8080);
+}).listen(8080, () => {
+  console.info('Listening on http://localhost:8080');
+});
