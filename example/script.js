@@ -1,9 +1,9 @@
 
 class FriendRank {
 
-	people = store.get('people') || {}
-	questions = store.get('questions') || {}
-	answers = store.get('answers') || []
+	people = store.get('people') || {}
+	questions = store.get('questions') || {}
+	answers = store.get('answers') || []
 
 	/*
 		STRUCTURE:
