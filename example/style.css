@@ -275,7 +275,7 @@ h2{
 	left: 0;
 	overflow: auto;
 	background: rgba(0,0,0,0.6);
-	backdrop-filter: blur(32px);
+	backdrop-filter: blur(32px) saturate(2);
 }
 .dialog[hidden]{
 	display: none;
