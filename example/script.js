@@ -406,7 +406,7 @@ const friendBoundaries = {
 
 	0: '', // This is needed for the alogrithm to show the headings correctly.
 	// 1: 'Special',
-	5: 'Very close',
+	5: 'Very Close Friends',
 	15: 'Best Friends',
 	50: 'Friends',
 	150: 'Casual Friends',
