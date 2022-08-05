@@ -132,9 +132,11 @@ button, input[type="submit"]{
 }
 button:hover, input[type="submit"]:hover,
 button:active, input[type="submit"]:active,
-button.active, input[type="submit"].active,
-button:focus, input[type="submit"]:focus {
+button.active, input[type="submit"].active {
 	box-shadow: 0 0 0 2px var(--text-color); /* currentColor is nice, but does not work with dark-/light-mode */
+}
+button:focus, input[type="submit"]:focus {
+	box-shadow: 0 0 0 2px var(--secondary-color);
 }
 button.caution{
 	border-radius: 3px;
