@@ -303,9 +303,9 @@ class FriendRank {
 	}
 	import(object){
 		return new Promise(async (resolve)=>{
-			this.people = object.people || {}
-			this.questions = object.questions || {}
-			this.answers = object.answers || []
+			this.people = object.people || {}
+			this.questions = object.questions || {}
+			this.answers = object.answers || []
 			this.filteredHashtags = object.filteredHashtags || []
 			await this.saveData()
 			resolve()
@@ -688,7 +688,7 @@ const socials = {
 	facebook: 'Facebook',
 }
 function render_personEditor(personID){
-	const personDoc = friend_rank.people[personID] || {}
+	const personDoc = friend_rank.people[personID] || {}
 
 	const personIDElement = document.querySelector('#personEditor [name="personID"]')
 	personIDElement.value = personID
