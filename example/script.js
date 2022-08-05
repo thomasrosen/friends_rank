@@ -696,6 +696,9 @@ function render_personEditor(personID){
 	const nameElement = document.querySelector('#personEditor [name="name"]')
 	nameElement.value = personDoc.name || ''
 
+	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
+	birthdayElement.value = personDoc.birthday || ''
+
 	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
 	hashtagsElement.value = personDoc.hashtags || ''
 
@@ -736,6 +739,9 @@ async function savePersonEditor(){
 
 	const nameElement = document.querySelector('#personEditor [name="name"]')
 	newDoc.name = nameElement.value
+
+	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
+	newDoc.birthday = birthdayElement.value
 
 	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
 	newDoc.hashtags = hashtagsElement.value
