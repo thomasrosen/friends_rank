@@ -152,6 +152,7 @@ class FriendRank {
 			const sortedPersonIDs = answer.sortedPersonIDs
 			const stepLength = 1/sortedPersonIDs.length
 
+			// TODO only use newest answer to a question
 			let questionWeight = 1
 			if (!!this.questions[answer.questionID]){
 				questionWeight = this.questions[answer.questionID].position*0.5+0.5
