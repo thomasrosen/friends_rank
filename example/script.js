@@ -4,6 +4,7 @@ class FriendRank {
 	people = store.get('people') || {}
 	questions = store.get('questions') || {}
 	answers = store.get('answers') || []
+	filteredHashtags = new Set(store.get('filteredHashtags')) || new Set()
 
 	/*
 		STRUCTURE:
@@ -16,6 +17,9 @@ class FriendRank {
 
 				birthday: String, // ISO standard. Unkown parts are in underscores.
 				birthday_ts: Number, // Best timestamp estimate for the birthday-string.
+
+				hashtags: String, // #berlin #bonn
+				hashtags_array: [String], ['berlin', 'bonn']
 
 				socials: {
 					twitter: String,
@@ -55,6 +59,7 @@ class FriendRank {
 			store.set('people', this.people)
 			store.set('questions', this.questions)
 			store.set('answers', this.answers)
+			store.set('filteredHashtags', [...this.filteredHashtags])
 			resolve()
 		})
 	}
@@ -73,6 +78,8 @@ class FriendRank {
 				...this.people[personID], // currently only allow name changes
 				socials: newPersonObj.socials,
 				name: newPersonObj.name,
+				hashtags: newPersonObj.hashtags,
+				hashtags_array: newPersonObj.hashtags_array,
 			}
 			await this.saveData()
 			resolve()
@@ -191,6 +198,8 @@ class FriendRank {
 			count: personEntry[1].count,
 			value: personEntry[1],
 			name: this.people[personEntry[0]].name,
+			hashtags_array: this.people[personEntry[0]].hashtags_array,
+			hashtags: this.people[personEntry[0]].hashtags,
 			timeAdded: this.people[personEntry[0]].timeAdded,
 		}))
 
@@ -202,6 +211,7 @@ class FriendRank {
 					personID: personEntry[0],
 					score: 0,
 					name: personEntry[1].name,
+					hashtags_array: personEntry[1].hashtags_array,
 					timeAdded: personEntry[1].timeAdded,
 				})
 			}
@@ -215,7 +225,68 @@ class FriendRank {
 			return a.timeAdded - b.timeAdded
 		})
 
+		// only show people with one of the filtered hashtags
+		if (this.filteredHashtags.size > 0) {
+			people = people.filter(person => {
+				if (Array.isArray(person.hashtags_array)) {
+					const filteredArray = person.hashtags_array.filter(hashtag => this.filteredHashtags.has(hashtag))
+					return filteredArray.length > 0
+				}
+				return false
+			})
+		}
+
 		return people
+	}
+	getAllHashtags() {
+		const hashtags = Object.values(this.people)
+			.reduce((hashtags, person) => {
+				if (person.hasOwnProperty('hashtags_array') && Array.isArray(person.hashtags_array)) {
+					for (const hashtag of person.hashtags_array) {
+						if (!hashtags[hashtag]) {
+							hashtags[hashtag] = {
+								hashtag: hashtag,
+								count: 0,
+								active: this.filteredHashtags.has(hashtag),
+							}
+						}
+						hashtags[hashtag].count += 1
+					}
+				}
+				return hashtags
+			}, {})
+		return Object.values(hashtags)
+	}
+	toggleHashtagFilter(hashtag) {
+		if (hashtag === 'none') {
+			this.filteredHashtags = new Set()
+		} else if (hashtag === 'invert') {
+			const newFilteredHashtags = this.filteredHashtags
+
+			for (const hashtag_info of this.getAllHashtags()) {
+				const hashtag = hashtag_info.hashtag.toLowerCase()
+				if (newFilteredHashtags.has(hashtag)) {
+					newFilteredHashtags.delete(hashtag)
+				} else {
+					newFilteredHashtags.add(hashtag)
+				}
+			}
+
+			this.filteredHashtags = newFilteredHashtags
+		} else {
+			const newFilteredHashtags = this.filteredHashtags
+			if (newFilteredHashtags.has(hashtag)) {
+				newFilteredHashtags.delete(hashtag)
+			} else {
+				newFilteredHashtags.add(hashtag)
+			}
+			this.filteredHashtags = newFilteredHashtags
+		}
+
+		this.saveData()
+	}
+	getFilteredHashtags() {
+		return this.filteredHashtags
 	}
 
 	exportEverything(){
@@ -226,6 +297,7 @@ class FriendRank {
 			people: this.people,
 			questions: this.questions,
 			answers: this.answers,
+			filteredHashtags: this.filteredHashtags,
 		}
 	}
 	import(object){
@@ -233,6 +305,7 @@ class FriendRank {
 			this.people = object.people || {}
 			this.questions = object.questions || {}
 			this.answers = object.answers || []
+			this.filteredHashtags = object.filteredHashtags || []
 			await this.saveData()
 			resolve()
 		})
@@ -276,6 +349,37 @@ function stringToColor(str) {
 		colour += ('00' + value.toString(16)).substr(-2);
 	}
 	return colour;
+}
+
+function hexToRGBArray(color) {
+	if (color.startsWith('#')) {
+		color = color.substring(1)
+	}
+
+	if (color.length === 3) {
+		color = color.charAt(0) + color.charAt(0) + color.charAt(1) + color.charAt(1) + color.charAt(2) + color.charAt(2);
+	} else if (color.length !== 6) {
+		throw (new Error('Invalid hex color: ' + color));
+	}
+
+	let rgb = [];
+	for (var i = 0; i <= 2; i++) {
+		rgb[i] = parseInt(color.substr(i * 2, 2), 16);
+	}
+
+	return rgb;
+}
+function luma(color) {
+	// color can be a hex string or an array of RGB values 0-255
+	const rgb = (typeof color === 'string') ? hexToRGBArray(color) : color;
+	return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]); // SMPTE C, Rec. 709 weightings
+}
+function getContrastingColor(color) {
+	// source: https://stackoverflow.com/questions/635022/calculating-contrasting-colours-in-javascript
+	// exact answer: https://stackoverflow.com/a/6511606/2387277
+	// example: https://jsfiddle.net/thomasrosen/9njo6t7s/20/
+
+	return (luma(color) >= 165) ? '000' : 'fff';
 }
 
 const editButtonSVG = '<svg class="editButton" role="button" viewBox="0 0 24 24" width="16px" height="16px"><path d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
@@ -336,12 +440,50 @@ function render_personList(){
 			}
 			peopleSinceLastHeading += 1
 
-			const hashtags_array = [] // personEntry.hashtags_array || []
+			const hashtags_array = Array.isArray(personEntry.hashtags_array) ? personEntry.hashtags_array : []
+
+			const hashtagElements = hashtags_array
+				.sort((a, b) => a.localeCompare(b))
+				.map(hashtag => {
+					const hashtagColorHex = stringToColor(hashtag)
+					const hashtagContrastingColorHex = '#' + getContrastingColor(hashtagColorHex)
+					return `<div style="
+						display: inline-block;
+						opacity: 0.75;
+
+						border-radius: 3px;
+						border: 0px;
+						color: ${hashtagContrastingColorHex};
+						background: ${hashtagColorHex};
+						outline: none;
+						font: inherit;
+						font-size: 0.8em;
+						letter-spacing: -0.02em;
+						font-weight: bold;
+
+						white-space: nowrap;
+						padding: 2px 4px;
+						margin: 0 2px;
+					">${hashtag}</div>`
+				})
+				.join('')
 
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
 				<div class="oneRowStretch" style="cursor: pointer;">
-					<div style="width: 100%;">${personEntry.name}</div>
+					<div style="
+						width: 100%;
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: space-between;
+					">
+						${personEntry.name}
+						${
+							hashtags_array.length > 0
+								? `<div style="flex-grow: 1; text-align: right;">${hashtagElements}</div>`
+								: ''
+						}
+					</div>
 					<span class="rankingInfos" style="opacity:${personEntry.opacity || 0};">${Math.round(personEntry.score*100)}</span>
 				</div>
 			`
@@ -429,6 +571,16 @@ function render_questionList() {
 
 function render_rankingQuestion(){
 	let people = Object.entries(friend_rank.people)
+
+	// only show people with one of the filtered hashtags
+	const filteredHashtags = friend_rank.getFilteredHashtags()
+	if (filteredHashtags.size > 0) {
+		people = people.filter(person => {
+			const filteredArray = person[1].hashtags_array.filter(hashtag => filteredHashtags.has(hashtag))
+			return filteredArray.length > 0
+		})
+	}
+
 	const questions = Object.entries(friend_rank.questions)
 
 	const minPeople = 2
@@ -466,6 +618,58 @@ function render_rankingQuestion(){
 	}
 }
 
+function render_hashtagList() {
+	const hashtags = friend_rank.getAllHashtags()
+		.sort((a, b) => b.count - a.count)
+
+	hashtags.unshift({
+		hashtag: 'invert',
+		count: 0,
+		active: false,
+	})
+	hashtags.unshift({
+		hashtag: 'none',
+		count: 0,
+		active: false,
+	})
+
+	const hashtagListElement = document.querySelector('#hashtagSelector')
+	// document.querySelector('#hashtagSelector').style.display = 'block'
+
+	hashtagListElement.innerHTML = ''
+	// display a list of hashtags as buttons with the count on the right side
+	for (const hashtag of hashtags) {
+		const newHashtagElement = document.createElement('button')
+
+		const hashtagColorHex = stringToColor(hashtag.hashtag)
+		newHashtagElement.style.backgroundColor = hashtagColorHex
+		newHashtagElement.style.color = '#' + getContrastingColor(hashtagColorHex)
+		newHashtagElement.style.margin = '4px'
+		newHashtagElement.style.fontWeight = 'bold'
+
+		if (hashtag.active) {
+			newHashtagElement.classList.add('active')
+		}
+		
+		newHashtagElement.setAttribute('data-hashtag', hashtag.hashtag)
+		if (hashtag.count > 1) {
+			newHashtagElement.innerHTML = `
+				<span>${hashtag.hashtag}</span>
+				<span class="count">${hashtag.count}</span>
+			`
+		} else {
+			newHashtagElement.innerHTML = `
+				<span>${hashtag.hashtag}</span>
+			`
+		}
+		newHashtagElement.addEventListener('click', ()=>{
+			const hashtag = newHashtagElement.getAttribute('data-hashtag')
+			friend_rank.toggleHashtagFilter(hashtag)
+			render()
+		})
+		hashtagListElement.appendChild(newHashtagElement)
+	}
+}
 
 function openPersonEditor(personID){
 	render_personEditor(personID)
@@ -491,6 +695,9 @@ function render_personEditor(personID){
 	const nameElement = document.querySelector('#personEditor [name="name"]')
 	nameElement.value = personDoc.name || ''
 
+	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
+	hashtagsElement.value = personDoc.hashtags || ''
+
 	let socialsValues = personDoc.socials || {}
 	let socialsHTML = ''
 	for (const socialsEntry of Object.entries(socials)) {
@@ -510,6 +717,16 @@ function render_personEditor(personID){
 		exitPersonEditor()
 	})
 }
+function getHashtags(text) {
+	const hashtags = text
+		.toLowerCase()
+		.replace('ö', 'oe')
+		.replace('ü', 'ue')
+		.replace('ä', 'ae')
+		.match(/#\w+/giu) // find hashtags
+		.map(tag => tag.substring(1)) // remove #
+	return hashtags
+}
 async function savePersonEditor(){
 	let newDoc = {}
 
@@ -518,6 +735,10 @@ async function savePersonEditor(){
 
 	const nameElement = document.querySelector('#personEditor [name="name"]')
 	newDoc.name = nameElement.value
+
+	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
+	newDoc.hashtags = hashtagsElement.value
+	newDoc.hashtags_array = getHashtags(hashtagsElement.value).map(hashtag => hashtag.toLowerCase())
 
 	let socialsValues = {}
 	for (const socialsEntry of Object.entries(socials)) {
@@ -533,6 +754,7 @@ async function savePersonEditor(){
 	await friend_rank.updatePerson(personID, newDoc)
 	render_personList()
 	render_rankingQuestion()
+	render_hashtagList()
 	exitPersonEditor()
 }
 
@@ -695,6 +917,7 @@ function render(){
 	render_personList()
 	render_questionList()
 	render_rankingQuestion()
+	render_hashtagList()
 }
 function questions_addSortable(){
 	questionSortable = Sortable.create(questionListElement, {
