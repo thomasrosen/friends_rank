@@ -485,7 +485,7 @@ function render_personList(){
 								: ''
 						}
 					</div>
-					<span class="rankingInfos" style="opacity:${personEntry.opacity || 0};">${Math.round(personEntry.score*100)}</span>
+					<!-- <span class="rankingInfos" style="opacity:${personEntry.opacity || 0};">${Math.round(personEntry.score*100)}</span> -->
 				</div>
 			`
 
