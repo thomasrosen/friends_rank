@@ -166,7 +166,13 @@ class FriendRank {
 						count: 0,
 					}
 				}
-				
+
+				// if (personID === this.benjiID) {
+				// 	console.log(' ')
+				// 	console.log('currentRank', currentRank)
+				// 	console.log('questionWeight', questionWeight)
+				// }
+
 				people[personID].score += currentRank * questionWeight
 				people[personID].count += 1
 
@@ -180,6 +186,9 @@ class FriendRank {
 
 		people = people
 			.map(person => {
+				// if (person[0] === '2e7c6df7-8c2b-4ebf-b17b-64c4deda4cd2') {
+				// 	console.log(person)
+				// }
 				person[1].score = (person[1].score/person[1].count)*10
 				return person
 			})
