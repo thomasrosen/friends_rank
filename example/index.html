@@ -48,7 +48,7 @@
 				<p>The questions should be about positive emotions or results caused by a person.</p>
 				<div class="oneRowStretch">
 					<label for="question">Question:</label>
-					<textarea id="question" name="question" placeholder="Mit wem möchtest du gerade eher Zeit verbringen?" style="margin-right: 0;"></textarea>
+					<div contenteditable class="textarea" id="question" name="question" placeholder="Mit wem möchtest du gerade eher Zeit verbringen?" style="margin-right: 0;"></div>
 				</div>
 				<div class="actions">
 					<span></span>
@@ -108,7 +108,8 @@
 
 					<label class="oneRowStretch top">
 						<span class="label">Note:</span>
-						<textarea name="note" placeholder="#work #city #hobbies" style="margin-right: 0;"></textarea>
+						<div contenteditable name="note" placeholder="#work #city #hobbies" class="textarea" style="margin-right: 0;"></div>
+						<!-- <textarea name="note" placeholder="#work #city #hobbies" style="margin-right: 0;"></textarea> -->
 					</label>
 
 					<hr style="margin: 32px;height:0px;" />

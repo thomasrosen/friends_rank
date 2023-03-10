@@ -747,7 +747,7 @@ function render_personEditor(personID){
 	birthdayElement.value = personDoc.birthday || ''
 
 	const noteElement = document.querySelector('#personEditor [name="note"]')
-	noteElement.value = personDoc.note || ''
+	noteElement.innerText = personDoc.note || ''
 
 	let socialsValues = personDoc.socials || {}
 	let socialsHTML = ''
@@ -798,7 +798,7 @@ async function savePersonEditor(){
 	newDoc.birthday = birthdayElement.value
 
 	const noteElement = document.querySelector('#personEditor [name="note"]')
-	const new_note = noteElement.value
+	const new_note = noteElement.innerText
 	newDoc.note = new_note
 	newDoc.hashtags_array = getHashtags(new_note).map(hashtag => hashtag.toLowerCase())
 
@@ -833,15 +833,15 @@ async function addPerson(){
 	}
 }
 async function addQuestion(){
-	const textField = document.querySelector('#addQuestion textarea[name="question"]')
-	const value = textField.value
+	const textField = document.querySelector('#addQuestion [name="question"]')
+	const value = textField.innerText
 	if (value !== '') {
 		await friend_rank.addQuestion({
 			question: value,
 			position: 1,
 			timeAdded: new Date()*1,
 		})
-		textField.value = ''
+		textField.innerText = ''
 		render_questionList()
 		render_rankingQuestion()
 	}
