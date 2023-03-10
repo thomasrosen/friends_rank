@@ -968,7 +968,7 @@ function start(){
 	personRankingListElement = document.querySelector('#personRanking ol')
 	personRankingSortable = Sortable.create(personRankingListElement)
 
-	questionListElement = document.querySelector('#questionList ul')
+	questionListElement = document.querySelector('#questionList ol')
 	questions_addSortable()
 
 	render()
