@@ -442,42 +442,52 @@ function render_personList(){
 			peopleSinceLastHeading += 1
 
 			const hashtags_array = Array.isArray(personEntry.hashtags_array) ? personEntry.hashtags_array : []
-
+			const hashtags_string = hashtags_array.join(', ')
 			const hashtagElements = hashtags_array
 				.sort((a, b) => a.localeCompare(b))
 				.map(hashtag => {
 					const hashtagColorHex = stringToColor(hashtag)
 					const hashtagContrastingColorHex = '#' + getContrastingColor(hashtagColorHex)
-					return `<div style="
-						display: inline-block;
-						opacity: 0.75;
+					return `<div
+						style="
+							display: inline-block;
+							opacity: 1;
 
-						border-radius: 3px;
-						border: 0px;
-						color: ${hashtagContrastingColorHex};
-						background: ${hashtagColorHex};
-						outline: none;
-						font: inherit;
-						font-size: 0.8em;
-						letter-spacing: -0.02em;
-						font-weight: bold;
+							border-radius: 3px;
+							border: 0px;
+							color: ${hashtagContrastingColorHex};
+							background: ${hashtagColorHex};
+							outline: none;
+							font: inherit;
+							font-size: 0.8em;
+							letter-spacing: -0.02em;
+							font-weight: bold;
 
-						white-space: nowrap;
-						padding: 2px 4px;
-						margin: 0 2px;
-					">${hashtag}</div>`
+							white-space: nowrap;
+							padding: 2px 4px;
+							margin: 0 2px;
+
+							width: 16px;
+							height: 16px;
+							border-radius: 50%;
+						"
+						title="${hashtag}"
+					></div>`
 				})
 				.join('')
 
 			const newPersonElement = document.createElement('li')
 			newPersonElement.innerHTML = `
 				<div class="oneRowStretch" style="cursor: pointer;">
-					<div style="
-						width: 100%;
-						display: flex;
-						flex-wrap: wrap;
-						justify-content: space-between;
-					">
+					<div
+						style="
+							width: 100%;
+							display: flex;
+							flex-wrap: wrap;
+							justify-content: space-between;
+						"
+						title="${personEntry.name}\n\n${hashtags_string}\n\nScore: ${Math.round(personEntry.score * 100)}"
+					>
 						${personEntry.name}
 						${
 							hashtags_array.length > 0
@@ -577,8 +587,11 @@ function render_rankingQuestion(){
 	const filteredHashtags = friend_rank.getFilteredHashtags()
 	if (filteredHashtags.size > 0) {
 		people = people.filter(person => {
-			const filteredArray = person[1].hashtags_array.filter(hashtag => filteredHashtags.has(hashtag))
-			return filteredArray.length > 0
+			if (Array.isArray(person[1].hashtags_array)) {
+				const filteredArray = person[1].hashtags_array.filter(hashtag => filteredHashtags.has(hashtag))
+				return filteredArray.length > 0
+			}
+			return false
 		})
 	}
 
@@ -775,7 +788,6 @@ async function addPerson(){
 		})
 		textField.value = ''
 		render_personList()
-		render_rankingQuestion()
 	}
 }
 async function addQuestion(){
