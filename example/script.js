@@ -18,7 +18,8 @@ class FriendRank {
 				birthday: String, // ISO standard. Unkown parts are in underscores.
 				birthday_ts: Number, // Best timestamp estimate for the birthday-string.
 
-				hashtags: String, // #berlin #bonn
+				notes: String, // free text. this can include hashtags, emails, phone numbers, etc. This could be parsed with a regex or gpt3.
+
 				hashtags_array: [String], ['berlin', 'bonn']
 
 				socials: {
@@ -53,7 +54,7 @@ class FriendRank {
 			(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 		)
 	}
-	
+
 	saveData(){
 		return new Promise((resolve)=>{
 			store.set('people', this.people)
@@ -78,7 +79,7 @@ class FriendRank {
 				...this.people[personID], // currently only allow name changes
 				socials: newPersonObj.socials,
 				name: newPersonObj.name,
-				hashtags: newPersonObj.hashtags,
+				notes: newPersonObj.notes,
 				hashtags_array: newPersonObj.hashtags_array,
 			}
 			await this.saveData()
@@ -206,8 +207,8 @@ class FriendRank {
 			count: personEntry[1].count,
 			value: personEntry[1],
 			name: this.people[personEntry[0]].name,
+			notes: this.people[personEntry[0]].notes,
 			hashtags_array: this.people[personEntry[0]].hashtags_array,
-			hashtags: this.people[personEntry[0]].hashtags,
 			timeAdded: this.people[personEntry[0]].timeAdded,
 		}))
 
@@ -305,19 +306,44 @@ class FriendRank {
 			people: this.people,
 			questions: this.questions,
 			answers: this.answers,
-			filteredHashtags: this.filteredHashtags,
+			filteredHashtags: [...this.filteredHashtags],
 		}
 	}
 	import(object){
 		return new Promise(async (resolve)=>{
+			console.log('object', object)
 			this.people = object.people || {}
 			this.questions = object.questions || {}
 			this.answers = object.answers || []
-			this.filteredHashtags = object.filteredHashtags || []
+			this.filteredHashtags = new Set()
+			if (Array.isArray(object.filteredHashtags)) {
+				this.filteredHashtags = new Set(...object.filteredHashtags)
+			}
+
+			await this.upgradeData()
+
 			await this.saveData()
 			resolve()
 		})
 	}
+
+	upgradeData(){
+		return new Promise(async (resolve) => {
+			this.people = (this.people || {})
+
+			for (const person_id in this.people) {
+				const person = this.people[person_id]
+
+				if (!person.notes && !!person.hashtags) {
+					person.notes = person.hashtags
+					this.people[person_id]
+				}
+			}
+
+			resolve()
+		})
+	}
+
 }
 
 
@@ -719,8 +745,8 @@ function render_personEditor(personID){
 	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
 	birthdayElement.value = personDoc.birthday || ''
 
-	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
-	hashtagsElement.value = personDoc.hashtags || ''
+	const notesElement = document.querySelector('#personEditor [name="notes"]')
+	notesElement.value = personDoc.notes || ''
 
 	let socialsValues = personDoc.socials || {}
 	let socialsHTML = ''
@@ -770,9 +796,10 @@ async function savePersonEditor(){
 	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
 	newDoc.birthday = birthdayElement.value
 
-	const hashtagsElement = document.querySelector('#personEditor [name="hashtags"]')
-	newDoc.hashtags = hashtagsElement.value
-	newDoc.hashtags_array = getHashtags(hashtagsElement.value).map(hashtag => hashtag.toLowerCase())
+	const notesElement = document.querySelector('#personEditor [name="notes"]')
+	const new_note = notesElement.value
+	newDoc.notes = new_note
+	newDoc.hashtags_array = getHashtags(new_note).map(hashtag => hashtag.toLowerCase())
 
 	let socialsValues = {}
 	for (const socialsEntry of Object.entries(socials)) {
