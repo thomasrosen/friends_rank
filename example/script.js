@@ -136,8 +136,6 @@ class FriendRank {
 		})
 	}
 
-
-
 	rankPeople(){
 		// const questionIDs = []
 		// const timeFrame_endTS = new Date()*1
