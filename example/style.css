@@ -54,11 +54,11 @@ textarea{
 .oneRowStretch.top{
 	align-items: flex-start;
 }
+.oneRowStretch.top .label{
+	margin-top: 10px;
+}
 .oneRowStretch.middle{
 	align-items: center;
-}
-.oneRowStretch label{
-	margin-top: 10px;
 }
 .oneRowStretch input[type="text"],
 .oneRowStretch textarea{
