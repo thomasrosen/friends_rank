@@ -99,17 +99,13 @@
 
 					<input name="personID" type="hidden" value=""/>
 
-					<hr style="margin: 32px;height:0px;" />
+					<hr style="margin: 16px;height:0px;" />
 
 					<label class="oneRowStretch middle">
 						<span class="label">Name:</span>
 						<input name="name" type="text" style="margin-right: 0;"/>
 					</label>
 
-					<label class="oneRowStretch middle">
-						<span class="label">Birthday:</span>
-						<input name="birthday" type="text" placeholder="YYYY-MM-DD HH:mm:ss" style="margin-right: 0;"/>
-					</label>
 
 					<label class="oneRowStretch top">
 						<span class="label">Note:</span>
@@ -117,15 +113,20 @@
 						<!-- <textarea name="note" placeholder="#work #city #hobbies" style="margin-right: 0;"></textarea> -->
 					</label>
 
-					<hr style="margin: 32px;height:0px;" />
+					<div style="display:none;">
+						<label class="oneRowStretch middle">
+							<span class="label">Birthday:</span>
+							<input name="birthday" type="text" placeholder="YYYY-MM-DD HH:mm:ss" style="margin-right: 0;"/>
+						</label>
 
-					<div id="socials"></div>
+						<hr style="margin: 16px;height:0px;" />
 
-					<hr style="margin: 32px;height:0px;" />
+						<div id="socials"></div>
+					</div>
+
+					<hr style="margin: 16px;height:0px;" />
 
 					<button id="deleteButton" onclick="deletePerson()" class="caution">Delete Person</button>
-
-					<hr style="margin: 32px;height:0px;" />
 
 					<div class="actions">
 						<button onclick="exitPersonEditor()">Cancel</button>
