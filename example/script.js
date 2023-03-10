@@ -742,6 +742,13 @@ function render_personEditor(personID){
 		deletePerson(personID)
 		exitPersonEditor()
 	})
+
+	// listen for esc key and close editor
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') {
+			exitPersonEditor()
+		}
+	})
 }
 function getHashtags(text) {
 	const hashtags = text
