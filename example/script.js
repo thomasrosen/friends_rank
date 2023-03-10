@@ -18,7 +18,8 @@ class FriendRank {
 				birthday: String, // ISO standard. Unkown parts are in underscores.
 				birthday_ts: Number, // Best timestamp estimate for the birthday-string.
 
-				notes: String, // free text. this can include hashtags, emails, phone numbers, etc. This could be parsed with a regex or gpt3.
+				note: String, // free text. this can include hashtags, emails, phone numbers, etc. This could be parsed with a regex or gpt3.
+				// todo add a notes array with date for each note
 
 				hashtags_array: [String], ['berlin', 'bonn']
 
@@ -79,7 +80,7 @@ class FriendRank {
 				...this.people[personID], // currently only allow name changes
 				socials: newPersonObj.socials,
 				name: newPersonObj.name,
-				notes: newPersonObj.notes,
+				note: newPersonObj.note,
 				hashtags_array: newPersonObj.hashtags_array,
 			}
 			await this.saveData()
@@ -207,7 +208,7 @@ class FriendRank {
 			count: personEntry[1].count,
 			value: personEntry[1],
 			name: this.people[personEntry[0]].name,
-			notes: this.people[personEntry[0]].notes,
+			note: this.people[personEntry[0]].note,
 			hashtags_array: this.people[personEntry[0]].hashtags_array,
 			timeAdded: this.people[personEntry[0]].timeAdded,
 		}))
@@ -334,8 +335,8 @@ class FriendRank {
 			for (const person_id in this.people) {
 				const person = this.people[person_id]
 
-				if (!person.notes && !!person.hashtags) {
-					person.notes = person.hashtags
+				if (!person.note && !!person.hashtags) {
+					person.note = person.hashtags
 					this.people[person_id]
 				}
 			}
@@ -745,8 +746,8 @@ function render_personEditor(personID){
 	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
 	birthdayElement.value = personDoc.birthday || ''
 
-	const notesElement = document.querySelector('#personEditor [name="notes"]')
-	notesElement.value = personDoc.notes || ''
+	const noteElement = document.querySelector('#personEditor [name="note"]')
+	noteElement.value = personDoc.note || ''
 
 	let socialsValues = personDoc.socials || {}
 	let socialsHTML = ''
@@ -796,9 +797,9 @@ async function savePersonEditor(){
 	const birthdayElement = document.querySelector('#personEditor [name="birthday"]')
 	newDoc.birthday = birthdayElement.value
 
-	const notesElement = document.querySelector('#personEditor [name="notes"]')
-	const new_note = notesElement.value
-	newDoc.notes = new_note
+	const noteElement = document.querySelector('#personEditor [name="note"]')
+	const new_note = noteElement.value
+	newDoc.note = new_note
 	newDoc.hashtags_array = getHashtags(new_note).map(hashtag => hashtag.toLowerCase())
 
 	let socialsValues = {}
