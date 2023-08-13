@@ -266,7 +266,7 @@ h1{
 }
 
 h2{
-	margin: 8px 0;
+	margin: 8px 0 16px 0;
 	line-height: 1;
 
 	font-family: var(--font-family);
